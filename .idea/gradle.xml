@@ -10,8 +10,8 @@
         <option name="gradleJvm" value="jbr-17" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/../../../../../DAM1_Sean/M07_M08/android_projects/TrivialApp" />
+            <option value="$PROJECT_DIR$/../../../../../DAM1_Sean/M07_M08/android_projects/TrivialApp/app" />
           </set>
         </option>
       </GradleProjectSettings>
