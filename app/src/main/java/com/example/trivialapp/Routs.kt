@@ -11,7 +11,7 @@ sealed class Routes(val route: String) {
     object GameScreen:Routes("gameScreen?{dificultad}"){
         fun createRouteToGame(dificultad: String?) = "gameScreen?$dificultad"
     }
-    object ResultScreen:Routes("resultScreen?{dificultad}/{enhorabona}"){
-        fun createRouteToResult(dificultad: String?, enhorabona: Boolean) = "resultScreen?$dificultad/$enhorabona"
+    object ResultScreen:Routes("resultScreen?{dificultad}/{enhorabona}/{numInt}"){
+        fun createRouteToResult(dificultad: String?, enhorabona: Boolean, numInt: Int) = "resultScreen?$dificultad/$enhorabona/$numInt"
     }
 }

@@ -200,12 +200,14 @@ fun GameScreen(navigationController: NavHostController, difficulty: String?) {
                 }
         )
     }
-    if (roundCount < 10)
+
+    if (roundCount < 10) {
         if (comprovar == true) {
-            if ()
             roundCount++
-            comprovar == false
+            comprovar = false
         }
-    else
-        navigationController.navigate(Routes.ResultScreen.createRouteToResult(dificultad = difficulty, enhorabona = congratulations))
+    } else
+        navigationController.navigate(Routes.ResultScreen.createRouteToResult(dificultad = difficulty, enhorabona = congratulations, numInt = numErrades))
+
+
 }

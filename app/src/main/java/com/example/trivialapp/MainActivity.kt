@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     val navigationController = rememberNavController()
                     NavHost(
                         navController = navigationController,
-                        startDestination = Routes.GameScreen.route
+                        startDestination = Routes.ResultScreen.route
                     ) {
                         composable(Routes.LunchScreen.route) { LunchScreen(navigationController) }
                         composable(Routes.MenuScreen.route) { MenuScreen(navigationController) }
@@ -53,9 +53,11 @@ class MainActivity : ComponentActivity() {
                                     { defaultValue = "Fàcil" })
                             )
                         ) { backStackEntry ->
-                            GameScreen(
+                            ResultScreen(
                                 navigationController,
-                                backStackEntry.arguments?.getString("dificultad")
+                                backStackEntry.arguments?.getString("dificultad"),
+                                backStackEntry.arguments?.getInt("numIntents") ?: 0,
+                                backStackEntry.arguments?.getBoolean("enhorabona") ?: true,
                             )
                         }
                     }
