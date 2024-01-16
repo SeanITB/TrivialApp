@@ -35,9 +35,7 @@ import com.example.trivialapp.model.MyViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel){
-    var selectedText by remember { mutableStateOf("EASY") }
-    var expanded by remember { mutableStateOf(false) }
-    var show by remember { mutableStateOf(false) }
+    val selectedText by remember { mutableStateOf("EASY") }
     Column (modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()

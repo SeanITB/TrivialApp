@@ -170,9 +170,6 @@ fun GameScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel,
                 }
             }
         }
-/*
-
-        */
         LinearProgressIndicator(
             progress = progresCount,
             color = MaterialTheme.colorScheme.secondary,
@@ -196,7 +193,8 @@ fun GameScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel,
         navigationController.navigate(
             Routes.ResultScreen.createRouteToResult(
                 dificultad = difficulty,
-                enhorabona = congratulations
+                enhorabona = congratulations,
+                numInt = numErrades
             )
         )
 }
