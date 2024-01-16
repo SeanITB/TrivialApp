@@ -1,4 +1,4 @@
-package com.example.trivialapp
+package com.example.trivialapp.View
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.trivialapp.R
+import com.example.trivialapp.model.MyViewModel
 import kotlinx.coroutines.delay
 
 @Composable
@@ -37,7 +39,7 @@ fun  Splash(alphaAnim: Float){
 }
 
 @Composable
-fun LunchScreen(navigationController: NavController) {
+fun LunchScreen(navigationController: NavController, VIEW_MODEL: MyViewModel) {
     var startAnimation by remember { mutableStateOf(false) }
     val alphaAnim = animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,

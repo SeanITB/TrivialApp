@@ -1,4 +1,4 @@
-package com.example.trivialapp
+package com.example.trivialapp.View
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,10 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
+import com.example.trivialapp.model.MyViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun GameScreen(navigationController: NavHostController, difficulty: String?) {
+fun GameScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel, difficulty: String?) {
     var lletraUsuari by remember { mutableStateOf("") }
     var comprovar by remember { mutableStateOf(false) }
     var congratulations by remember { mutableStateOf(false) }
@@ -170,21 +171,7 @@ fun GameScreen(navigationController: NavHostController, difficulty: String?) {
             }
         }
 /*
-        Slider(
-            value = roundCount,
-            onValueChange = { roundCount = it },
-            onValueChangeFinished = { finishValue = sliderValue.toInt()},
-            valueRange = 1f..10f,
-            steps = 9,
-            modifier = Modifier
-                .width(370.dp)
-                .constrainAs(progres) {
-                    top.linkTo(answer.bottom)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-        )
+
         */
         LinearProgressIndicator(
             progress = progresCount,
@@ -200,14 +187,16 @@ fun GameScreen(navigationController: NavHostController, difficulty: String?) {
                 }
         )
     }
-
-    if (roundCount < 10) {
+    if (roundCount < 10)
         if (comprovar == true) {
             roundCount++
             comprovar = false
         }
-    } else
-        navigationController.navigate(Routes.ResultScreen.createRouteToResult(dificultad = difficulty, enhorabona = congratulations, numInt = numErrades))
-
-
+    else
+        navigationController.navigate(
+            Routes.ResultScreen.createRouteToResult(
+                dificultad = difficulty,
+                enhorabona = congratulations
+            )
+        )
 }

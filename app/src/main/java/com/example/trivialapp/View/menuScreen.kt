@@ -1,28 +1,21 @@
-package com.example.trivialapp
+package com.example.trivialapp.View
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -36,13 +29,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
+import com.example.trivialapp.R
+import com.example.trivialapp.model.MyViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(navigationController: NavHostController){
+fun MenuScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel){
     var selectedText by remember { mutableStateOf("EASY") }
     var expanded by remember { mutableStateOf(false) }
-    val difficulties = listOf("EASY", "NORMAL", "DIFFICULT")
     var show by remember { mutableStateOf(false) }
     Column (modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         ConstraintLayout(
@@ -61,43 +55,13 @@ fun MenuScreen(navigationController: NavHostController){
                         end.linkTo(parent.end)
                     }
             )
-            OutlinedTextField(
-                value = selectedText,
-                onValueChange = { selectedText = it },
-                label = { Text("DIFFICULTY") },
-                enabled = false,
-                readOnly = true,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color.Green,
-                ),
-                modifier = Modifier
-                    .clickable { expanded = true }
-                    .constrainAs(opcions) {
-                        top.linkTo(imgPenjat.bottom, margin = 15.dp)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-            )
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .constrainAs(opcions) {
-                        top.linkTo(opcions.bottom, margin = 15.dp)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-            ) {
-                difficulties.forEach { difficulty ->
-                    DropdownMenuItem(text = { Text(text = difficulty) }, onClick = {
-                        expanded = false
-                        selectedText = difficulty
-                    })
-                }
-            }
+
             Button(
-                onClick = { navigationController.navigate(Routes.GameScreen.createRouteToGame(dificultad = selectedText)) },
+                onClick = { navigationController.navigate(
+                    Routes.GameScreen.createRouteToGame(
+                        dificultad = selectedText
+                    )
+                ) },
                 shape = RoundedCornerShape(5.dp),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
                 modifier = Modifier
@@ -111,7 +75,7 @@ fun MenuScreen(navigationController: NavHostController){
                 Text(text = "New Game")
             }
             Button(
-                onClick = { show = true },
+                onClick = { navigationController.navigate(Routes.SettingsScreen.route) },
                 shape = RoundedCornerShape(5.dp),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
                 modifier = Modifier
