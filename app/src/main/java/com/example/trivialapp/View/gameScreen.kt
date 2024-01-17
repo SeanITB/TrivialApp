@@ -1,5 +1,6 @@
 package com.example.trivialapp.View
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -19,6 +20,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,11 +34,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
-import com.example.trivialapp.model.MyViewModel
+import com.example.trivialapp.ViewModel.MyViewModel
+import com.example.trivialapp.navigation.Routes
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun GameScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel, difficulty: String?) {
+fun GameScreen(navigationController: NavHostController, viewModel: MyViewModel) {
     var lletraUsuari by remember { mutableStateOf("") }
     var comprovar by remember { mutableStateOf(false) }
     var congratulations by remember { mutableStateOf(false) }
@@ -54,7 +58,7 @@ fun GameScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel,
     val correctAnswers = arrayOf(false, false, false, false)
     //Crear paraula aleatoria
     val diffInt by remember { mutableStateOf(
-        when (difficulty) {
+        when (viewModel.difficulty) {
             "EASY" ->  0
             "NORMAL" -> 1
             else -> 2
@@ -88,7 +92,7 @@ fun GameScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel,
                 )
             }
             Text(
-                text = "MODE ${difficulty!!.uppercase()}",
+                text = "MODE ${viewModel.difficulty}",
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
                 fontSize = 20.sp,
@@ -97,7 +101,7 @@ fun GameScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel,
             )
         }
         Text(
-            text = "Round $roundCount/10",
+            text = "Round $roundCount/${viewModel.rounds}",
             modifier = Modifier.constrainAs(round) {
                 top.linkTo(diffText.bottom)
                 bottom.linkTo(question.top)
@@ -170,6 +174,12 @@ fun GameScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel,
                 }
             }
         }
+        LaunchedEffect(key1 = viewModel.time) {
+            while (viewModel.time > 0) {
+                delay(1000L)
+                viewModel.changeTime(viewModel.time - 1)
+            }
+        }
         LinearProgressIndicator(
             progress = progresCount,
             color = MaterialTheme.colorScheme.secondary,
@@ -184,17 +194,19 @@ fun GameScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel,
                 }
         )
     }
-    if (roundCount < 10)
+    Log.i("Rounds","$roundCount")
+    if (roundCount < 10) {
         if (comprovar == true) {
             roundCount++
             comprovar = false
         }
-    else
+    } else
         navigationController.navigate(
             Routes.ResultScreen.createRouteToResult(
-                dificultad = difficulty,
                 enhorabona = congratulations,
                 numInt = numErrades
             )
         )
+
+
 }

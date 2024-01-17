@@ -16,9 +16,9 @@ import com.example.trivialapp.View.GameScreen
 import com.example.trivialapp.View.LunchScreen
 import com.example.trivialapp.View.MenuScreen
 import com.example.trivialapp.View.ResultScreen
-import com.example.trivialapp.View.Routes
+import com.example.trivialapp.navigation.Routes
 import com.example.trivialapp.View.SettingsScreen
-import com.example.trivialapp.model.MyViewModel
+import com.example.trivialapp.ViewModel.MyViewModel
 import com.example.trivialapp.ui.theme.TrivialAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -35,21 +35,11 @@ class MainActivity : ComponentActivity() {
                     val navigationController = rememberNavController()
                     NavHost(
                         navController = navigationController,
-                        startDestination = Routes.SettingsScreen.route
+                        startDestination = Routes.GameScreen.route
                     ) {
                         composable(Routes.LunchScreen.route) { LunchScreen(navigationController, myViewModel) }
-                        composable(Routes.MenuScreen.route) { MenuScreen(navigationController, myViewModel) }
-                        composable(
-                            Routes.GameScreen.route,
-                            arguments = listOf(navArgument("dificultad", { defaultValue = "Fàcil" })
-                            )
-                        ) { backStackEntry ->
-                            GameScreen(
-                                navigationController,
-                                myViewModel,
-                                backStackEntry.arguments?.getString("dificultad")
-                            )
-                        }
+                        composable(Routes.MenuScreen.route,) { MenuScreen(navigationController, myViewModel)}
+                        composable(Routes.GameScreen.route) { GameScreen(navigationController, myViewModel) }
                         composable(
                             Routes.ResultScreen.route,
                             arguments = listOf(navArgument("dificultad", { defaultValue = "Fàcil" }))
@@ -57,7 +47,6 @@ class MainActivity : ComponentActivity() {
                             ResultScreen(
                                 navigationController,
                                 myViewModel,
-                                backStackEntry.arguments?.getString("dificultad"),
                                 backStackEntry.arguments?.getInt("numIntents") ?: 0,
                                 backStackEntry.arguments?.getBoolean("enhorabona") ?: true,
                             )

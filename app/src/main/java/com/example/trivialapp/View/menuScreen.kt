@@ -2,39 +2,32 @@ package com.example.trivialapp.View
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.example.trivialapp.R
-import com.example.trivialapp.model.MyViewModel
+import com.example.trivialapp.ViewModel.MyViewModel
+import com.example.trivialapp.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel){
+fun MenuScreen(navigationController: NavHostController, viewModel: MyViewModel){
     val selectedText by remember { mutableStateOf("EASY") }
     Column (modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         ConstraintLayout(
@@ -55,11 +48,7 @@ fun MenuScreen(navigationController: NavHostController, VIEW_MODEL: MyViewModel)
             )
 
             Button(
-                onClick = { navigationController.navigate(
-                    Routes.GameScreen.createRouteToGame(
-                        dificultad = selectedText
-                    )
-                ) },
+                onClick = { navigationController.navigate(Routes.GameScreen.route) },
                 shape = RoundedCornerShape(5.dp),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
                 modifier = Modifier

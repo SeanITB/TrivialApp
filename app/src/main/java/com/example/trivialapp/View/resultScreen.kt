@@ -17,10 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
-import com.example.trivialapp.model.MyViewModel
+import com.example.trivialapp.ViewModel.MyViewModel
+import com.example.trivialapp.navigation.Routes
 
 @Composable
-fun ResultScreen(navController: NavHostController, myViewModel: MyViewModel, dificultad: String?, numInt: Int, enhorabona: Boolean/*, viewModel: MyViewModel*/){
+fun ResultScreen(navController: NavHostController, myViewModel: MyViewModel, numInt: Int, enhorabona: Boolean){
     val arrMsg by remember { mutableStateOf(arrayOf("", "")) }
     if (enhorabona == true) {
         arrMsg[0] = "Enhorabona!"
