@@ -12,7 +12,7 @@ class MyViewModel : ViewModel() {
     var difficulty by mutableStateOf("EASY")
         private set
 
-    var rounds by mutableStateOf(10)
+    var rounds by mutableStateOf(5)
         private set
 
     var time by mutableStateOf(2f)

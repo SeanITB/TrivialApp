@@ -18,20 +18,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.example.trivialapp.ViewModel.MyViewModel
+import com.example.trivialapp.model.rememberGameInfo
 import com.example.trivialapp.navigation.Routes
 
 @Composable
-fun ResultScreen(navController: NavHostController, myViewModel: MyViewModel, numInt: Int, enhorabona: Boolean){
-    val arrMsg by remember { mutableStateOf(arrayOf("", "")) }
-    if (enhorabona == true) {
-        arrMsg[0] = "Enhorabona!"
-        arrMsg[1] = "Has guanyat"
-    }
-    else {
-        arrMsg[0] = "La meva sincera compassió"
-        arrMsg[1] = "Has perdut"
-    }
-
+fun ResultScreen(navController: NavHostController, myViewModel: MyViewModel){
+    val gameInfo = rememberGameInfo()
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ){
@@ -39,7 +31,7 @@ fun ResultScreen(navController: NavHostController, myViewModel: MyViewModel, num
         val topGuide = createGuidelineFromTop(0.1f)
         val bottomGuide = createGuidelineFromBottom(0.2f)
         Text(
-            text = arrMsg[0],
+            text = "Result of the game",
             fontWeight = FontWeight.Bold,
             fontSize = 25.sp,
             color = MaterialTheme.colorScheme.primary,
@@ -49,8 +41,25 @@ fun ResultScreen(navController: NavHostController, myViewModel: MyViewModel, num
                 end.linkTo(parent.end)
             }
         )
+        Text(
+            text = """
+                Difficulty mode: ${myViewModel.difficulty}
+                Right answears: ${gameInfo.rightAnswers}
+                Number of round: ${myViewModel.rounds}
+                Time for round: ${myViewModel.time*10} seconds
+            """.trimIndent(),
+            fontWeight = FontWeight.Bold,
+            fontSize = 25.sp,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.constrainAs(msgSecundari) {
+                top.linkTo(msgInicial.bottom)
+                bottom.linkTo(botTJ.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }
+        )
         Button(
-            onClick = { navController.navigate(Routes.GameScreen.route) },
+            onClick = { navController.navigate(Routes.VerticalGameScreen.route) },
             shape = RoundedCornerShape(5.dp),
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier

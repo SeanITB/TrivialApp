@@ -1,5 +1,6 @@
 package com.example.trivialapp
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,11 +8,14 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.trivialapp.View.HoritzontalGameScreen
 import com.example.trivialapp.View.GameScreen
 import com.example.trivialapp.View.LunchScreen
 import com.example.trivialapp.View.MenuScreen
@@ -23,6 +27,7 @@ import com.example.trivialapp.ui.theme.TrivialAppTheme
 
 class MainActivity : ComponentActivity() {
     val myViewModel by viewModels<MyViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -33,22 +38,20 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navigationController = rememberNavController()
+                    val configuration = LocalConfiguration.current
                     NavHost(
                         navController = navigationController,
-                        startDestination = Routes.GameScreen.route
+                        startDestination = Routes.VerticalGameScreen.route
                     ) {
                         composable(Routes.LunchScreen.route) { LunchScreen(navigationController, myViewModel) }
                         composable(Routes.MenuScreen.route,) { MenuScreen(navigationController, myViewModel)}
-                        composable(Routes.GameScreen.route) { GameScreen(navigationController, myViewModel) }
+                        composable(Routes.VerticalGameScreen.route) { GameScreen(navigationController, myViewModel) }
+                        composable(Routes.HoritzontalGameScreen.route) { HoritzontalGameScreen(navigationController, myViewModel)}
                         composable(
-                            Routes.ResultScreen.route,
-                            arguments = listOf(navArgument("dificultad", { defaultValue = "Fàcil" }))
-                        ) { backStackEntry ->
+                            Routes.ResultScreen.route) {
                             ResultScreen(
                                 navigationController,
-                                myViewModel,
-                                backStackEntry.arguments?.getInt("numIntents") ?: 0,
-                                backStackEntry.arguments?.getBoolean("enhorabona") ?: true,
+                                myViewModel
                             )
                         }
                         composable(Routes.SettingsScreen.route) { SettingsScreen(navigationController, myViewModel) }
@@ -57,4 +60,14 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+@Composable
+fun orientation(): Boolean {
+    val configuration = LocalConfiguration.current
+    val isVertical: Boolean = when (configuration.orientation) {
+        Configuration.ORIENTATION_LANDSCAPE -> true
+        else -> false
+    }
+    return isVertical
 }

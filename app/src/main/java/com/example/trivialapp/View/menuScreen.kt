@@ -23,6 +23,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.example.trivialapp.R
 import com.example.trivialapp.ViewModel.MyViewModel
+import com.example.trivialapp.model.WindowInfo
+import com.example.trivialapp.model.remeberWindowInfo
 import com.example.trivialapp.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,6 +37,7 @@ fun MenuScreen(navigationController: NavHostController, viewModel: MyViewModel){
         ){
             val (imgPenjat, opcions, jugar, ajuda) = createRefs()
             val topGuide = createGuidelineFromTop(0.2f)
+            val windowInfo = remeberWindowInfo()
             Image(painter = painterResource(id = R.drawable.ic_launcher_foreground),
                 contentDescription = "logo",
                 modifier = Modifier
@@ -48,7 +51,11 @@ fun MenuScreen(navigationController: NavHostController, viewModel: MyViewModel){
             )
 
             Button(
-                onClick = { navigationController.navigate(Routes.GameScreen.route) },
+                    onClick = {
+                        if (windowInfo.sreenWidthInfo is WindowInfo.WindowType.Compact)
+                            navigationController.navigate(Routes.VerticalGameScreen.route)
+                        else
+                              navigationController.navigate(Routes.HoritzontalGameScreen.route)},
                 shape = RoundedCornerShape(5.dp),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
                 modifier = Modifier
