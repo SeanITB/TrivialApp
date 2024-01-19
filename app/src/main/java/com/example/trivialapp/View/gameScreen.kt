@@ -37,8 +37,15 @@ import androidx.navigation.NavHostController
 import com.example.trivialapp.ViewModel.MyViewModel
 import com.example.trivialapp.navigation.Routes
 import kotlinx.coroutines.delay
+import java.util.concurrent.TimeUnit
+import android.os.Handler
+import android.os.Looper
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.res.painterResource
+import com.example.trivialapp.model.Questions
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalStdlibApi::class)
 @Composable
 fun GameScreen(navigationController: NavHostController, viewModel: MyViewModel) {
     var lletraUsuari by remember { mutableStateOf("") }
@@ -64,13 +71,16 @@ fun GameScreen(navigationController: NavHostController, viewModel: MyViewModel) 
             else -> 2
         }
     ) }
-    val randomQuestion by remember { mutableStateOf(arrQuestions[diffInt].random()) }
-    ConstraintLayout (
+    var timePast by remember { mutableStateOf(0.0f) }
+    var randomQuestion by remember { mutableStateOf(Questions.values().random()) }
+    if (timePast == 0.1f)
+        randomQuestion = Questions.values().random()
+    ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
         val startGuide = createGuidelineFromStart(0.1f)
         val endGuide = createGuidelineFromEnd(0.1f)
-        val (diffText, round, question, answer, progres) = createRefs()
+        val (diffText, round, imgQuestion, question, answer, progres) = createRefs()
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -92,7 +102,7 @@ fun GameScreen(navigationController: NavHostController, viewModel: MyViewModel) 
                 )
             }
             Text(
-                text = "MODE ${viewModel.difficulty}",
+                text = "${viewModel.difficulty} MODE",
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
                 fontSize = 20.sp,
@@ -104,39 +114,35 @@ fun GameScreen(navigationController: NavHostController, viewModel: MyViewModel) 
             text = "Round $roundCount/${viewModel.rounds}",
             modifier = Modifier.constrainAs(round) {
                 top.linkTo(diffText.bottom)
-                bottom.linkTo(question.top)
+                bottom.linkTo(imgQuestion.top)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             }
-            )
-        //Text(text = paraulaAleatoria)
-        /* podira poner imagenes por cada pregunta
+        )
         Image(
-            painter = painterResource(id = penjatPng[numErrades]),
+            painter = painterResource(id = randomQuestion.img),
             contentDescription = "animació del penjat",
             modifier = Modifier
                 .size(200.dp)
-                .constrainAs(hagmna){
-                    top.linkTo(dificultatText.bottom)
-                    bottom.linkTo(lletresSelecioneades.top)
+                .constrainAs(imgQuestion){
+                    top.linkTo(round.bottom)
+                    bottom.linkTo(question.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
         )
-
-         */
         Text(
-            text = randomQuestion,
+            text = "¿Qué y para qué sirve?",
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
+            fontSize = 20.sp,
             modifier = Modifier.constrainAs(question) {
-                top.linkTo(round.bottom)
+                top.linkTo(question.bottom)
                 bottom.linkTo(answer.top)
                 start.linkTo(startGuide)
                 end.linkTo(endGuide)
             }
-            )
+        )
         FlowRow(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
@@ -148,7 +154,7 @@ fun GameScreen(navigationController: NavHostController, viewModel: MyViewModel) 
                     end.linkTo(parent.end)
                 }
         ) {
-            answers.indices.forEach{ index ->
+            answers.indices.forEach { index ->
                 Button(
                     onClick = { comprovar = true },
                     shape = RoundedCornerShape(5.dp),
@@ -165,23 +171,29 @@ fun GameScreen(navigationController: NavHostController, viewModel: MyViewModel) 
                     enabled = enabledButtons[index],
                 ) {
                     Text(
-                        text = answers[index],
+                        text = randomQuestion.answers[index],
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
+                        fontSize = 12.sp,
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
                 }
             }
         }
-        LaunchedEffect(key1 = viewModel.time) {
-            while (viewModel.time > 0) {
+
+        LaunchedEffect(key1 = timePast) {
+            if (timePast == viewModel.time) {
+                timePast = 0.0f
+            } else {
                 delay(1000L)
-                viewModel.changeTime(viewModel.time - 1)
+                timePast+0.1f
             }
+            //while (timePast < viewModel.time) { }
         }
+        Text(text = "$timePast")
         LinearProgressIndicator(
-            progress = progresCount,
+            progress = timePast,
             color = MaterialTheme.colorScheme.secondary,
             trackColor = MaterialTheme.colorScheme.onTertiary,
             modifier = Modifier
@@ -194,7 +206,8 @@ fun GameScreen(navigationController: NavHostController, viewModel: MyViewModel) 
                 }
         )
     }
-    Log.i("Rounds","$roundCount")
+
+    Log.i("Rounds", "$roundCount")
     if (roundCount < 10) {
         if (comprovar == true) {
             roundCount++
@@ -207,6 +220,24 @@ fun GameScreen(navigationController: NavHostController, viewModel: MyViewModel) 
                 numInt = numErrades
             )
         )
+    if (timePast == viewModel.time) timePast = 0.1f
 
+}
 
+private fun formatTime(time: Long): String {
+    val seconds = TimeUnit.MILLISECONDS.toSeconds(time)
+    return String.format("0.00", seconds)
+}
+
+private fun startTimer(context: android.content.Context, onTick: (Long) -> Unit) {
+    val handler = Handler(Looper.getMainLooper())
+    var elapsedTime = 0L
+
+    handler.postDelayed(object : Runnable {
+        override fun run() {
+            elapsedTime += 100L // update every 100 milliseconds
+            onTick(elapsedTime)
+            handler.postDelayed(this, 100)
+        }
+    }, 100)
 }

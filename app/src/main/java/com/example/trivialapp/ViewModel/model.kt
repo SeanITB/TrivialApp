@@ -15,7 +15,7 @@ class MyViewModel : ViewModel() {
     var rounds by mutableStateOf(10)
         private set
 
-    var time by mutableStateOf(10)
+    var time by mutableStateOf(2f)
         private set
 
     fun changeDarkThem(value: Boolean) {
@@ -30,7 +30,7 @@ class MyViewModel : ViewModel() {
         rounds = value
     }
 
-    fun changeTime(value: Int) {
+    fun changeTime(value: Float) {
         time = value
     }
 

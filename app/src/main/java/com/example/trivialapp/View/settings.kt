@@ -55,7 +55,7 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: MyViewMod
         var arrStatus by rememberSaveable { mutableStateOf(arrayOf(false, false, false)) }
         var sliderValue by remember { mutableStateOf(0f) }
         var finishValue by remember { mutableStateOf("") }
-        var timeCount by remember { mutableStateOf(10f) }
+        var timeCount by remember { mutableStateOf(2f) }
         //val settings by remember { mutableStateOf(Settings(difficulties[0], arrRounds[0], finishValue.toInt())) }
         Column (
             modifier = Modifier.constrainAs(difficulty) {
@@ -157,9 +157,9 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: MyViewMod
             Slider(
                 value = timeCount,
                 onValueChange = { timeCount = it },
-                onValueChangeFinished = { viewModel.changeTime(sliderValue.toInt())},
-                valueRange = 1f..10f,
-                steps = 8,
+                onValueChangeFinished = { viewModel.changeTime(sliderValue)},
+                valueRange = 0.1f..2f,
+                steps = 18,
                 modifier = Modifier.fillMaxWidth(),
                 colors = SliderDefaults.colors(
                     thumbColor = MaterialTheme.colorScheme.secondary,
