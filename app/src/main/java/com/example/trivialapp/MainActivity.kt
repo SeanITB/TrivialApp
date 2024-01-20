@@ -23,11 +23,12 @@ import com.example.trivialapp.View.ResultScreen
 import com.example.trivialapp.navigation.Routes
 import com.example.trivialapp.View.SettingsScreen
 import com.example.trivialapp.ViewModel.MyViewModel
+import com.example.trivialapp.model.RememberGameInfo
 import com.example.trivialapp.ui.theme.TrivialAppTheme
 
 class MainActivity : ComponentActivity() {
     val myViewModel by viewModels<MyViewModel>()
-
+    val gameInfo by viewModels<RememberGameInfo>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -41,17 +42,17 @@ class MainActivity : ComponentActivity() {
                     val configuration = LocalConfiguration.current
                     NavHost(
                         navController = navigationController,
-                        startDestination = Routes.VerticalGameScreen.route
+                        startDestination = Routes.LunchScreen.route
                     ) {
                         composable(Routes.LunchScreen.route) { LunchScreen(navigationController, myViewModel) }
                         composable(Routes.MenuScreen.route,) { MenuScreen(navigationController, myViewModel)}
-                        composable(Routes.VerticalGameScreen.route) { GameScreen(navigationController, myViewModel) }
-                        composable(Routes.HoritzontalGameScreen.route) { HoritzontalGameScreen(navigationController, myViewModel)}
+                        composable(Routes.VerticalGameScreen.route) { GameScreen(navigationController, myViewModel, gameInfo) }
+                        composable(Routes.HoritzontalGameScreen.route) { HoritzontalGameScreen(navigationController, myViewModel, gameInfo)}
                         composable(
                             Routes.ResultScreen.route) {
                             ResultScreen(
                                 navigationController,
-                                myViewModel
+                                myViewModel, gameInfo
                             )
                         }
                         composable(Routes.SettingsScreen.route) { SettingsScreen(navigationController, myViewModel) }

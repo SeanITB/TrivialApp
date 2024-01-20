@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.example.trivialapp.ViewModel.MyViewModel
-import com.example.trivialapp.model.rememberGameInfo
+import com.example.trivialapp.model.RememberGameInfo
 import com.example.trivialapp.navigation.Routes
 
 @Composable
-fun ResultScreen(navController: NavHostController, myViewModel: MyViewModel){
-    val gameInfo = rememberGameInfo()
+fun ResultScreen(navController: NavHostController, myViewModel: MyViewModel, gameInfo: RememberGameInfo){
+    //val gameInfo = rememberGameInfo()
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ){

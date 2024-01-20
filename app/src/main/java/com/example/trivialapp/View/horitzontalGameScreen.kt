@@ -1,3 +1,4 @@
+/*
 package com.example.trivialapp.View
 
 import androidx.compose.foundation.background
@@ -39,11 +40,13 @@ import kotlinx.coroutines.delay
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.res.painterResource
+import com.example.trivialapp.model.GameInfo
 import com.example.trivialapp.model.Question
+import com.example.trivialapp.model.RememberGameInfo
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalStdlibApi::class)
 @Composable
-fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: MyViewModel) {
+fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: MyViewModel, gameInfo: RememberGameInfo) {
     var userAnswear by remember { mutableStateOf(0) }
     var comprovar by remember { mutableStateOf(false) }
     var numRaightAnswars by remember { mutableStateOf(0) }
@@ -205,3 +208,5 @@ fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: My
     } else
         navigationController.navigate(Routes.ResultScreen.route)
 }
+
+ */

@@ -1,5 +1,6 @@
 package com.example.trivialapp.View
 
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -34,34 +35,43 @@ import kotlinx.coroutines.delay
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.res.painterResource
-import com.example.trivialapp.model.GameInfo
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trivialapp.model.Question
+import com.example.trivialapp.model.RememberGameInfo
 import com.example.trivialapp.model.WindowInfo
 import com.example.trivialapp.model.remeberWindowInfo
-import com.example.trivialapp.model.rememberGameInfo
 
 @Composable
-fun GameScreen(navigationController: NavHostController, viewModel: MyViewModel) {
+fun GameScreen(navigationController: NavHostController, viewModels: MyViewModel, gameInfo: RememberGameInfo) {
     val windowInfo = remeberWindowInfo()
-    val gameInfo = rememberGameInfo()
+    //val gameInfo: RememberGameInfo = viewModel()
     if (gameInfo.timePassed >= 1f || false in gameInfo.enabledButtons) {
-        gameInfo.randomQuestion = Question.values().random()
-        gameInfo.timePassed = 0.0f
-        gameInfo.roundCount++
+        gameInfo.updateRandomQuestion(Question.values().random())
+        gameInfo.updateTimePass(0.0f)
+        //gameInfo.updateRightAnsers(1)
+        gameInfo.updateRoundCount(1)
         for (index in gameInfo.enabledButtons.indices) gameInfo.enabledButtons[index] = true
     }
+    LaunchedEffect(key1 = gameInfo.timePassed) {
+        if (gameInfo.timePassed < 1f) {
+            delay(1000L)
+            gameInfo.updateTimePass(0.05f)
+        }
+    }
+
+    Text(text = "${gameInfo.timePassed}")
     if (windowInfo.sreenWidthInfo is WindowInfo.WindowType.Compact)
-        VerticalGameScreen(navigationController, viewModel, gameInfo)
+        VerticalGameScreen(navigationController, viewModels, gameInfo)
     else
-        HoritzontalGameScreen(navigationController, viewModel, gameInfo)
+        HoritzontalGameScreen(navigationController, viewModels, gameInfo)
     
-    if (gameInfo.roundCount < viewModel.rounds + 1) {
+    if (gameInfo.roundCount < viewModels.rounds + 1) {
         if (gameInfo.check == true) {
             if (gameInfo.randomQuestion.answers[gameInfo.userAnswear].equals(gameInfo.randomQuestion.raightAnswear)) {
                 gameInfo.correctAnswers[gameInfo.userAnswear] = true
-                gameInfo.rightAnswers += 1
+                gameInfo.updateRightAnsers(1)
             }
-            gameInfo.check = false
+            gameInfo.updateChek(false)
         }
     } else
         navigationController.navigate(Routes.ResultScreen.route)
@@ -69,7 +79,7 @@ fun GameScreen(navigationController: NavHostController, viewModel: MyViewModel) 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun VerticalGameScreen(navigationController: NavHostController, viewModel: MyViewModel, gameInfo: GameInfo) {
+fun VerticalGameScreen(navigationController: NavHostController, viewModel: MyViewModel, gameInfo: RememberGameInfo) {
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -152,8 +162,8 @@ fun VerticalGameScreen(navigationController: NavHostController, viewModel: MyVie
             gameInfo.randomQuestion.answers.indices.forEach { index ->
                 Button(
                     onClick = {
-                        gameInfo.check = true
-                        gameInfo.userAnswear = index
+                        gameInfo.updateChek(true)
+                        gameInfo.updateUserAnswear(index)
                         gameInfo.enabledButtons[index] = false
                     },
                     shape = RoundedCornerShape(5.dp),
@@ -182,14 +192,7 @@ fun VerticalGameScreen(navigationController: NavHostController, viewModel: MyVie
                 }
             }
         }
-        LaunchedEffect(key1 = gameInfo.timePassed) {
-            if (gameInfo.timePassed < 1f) {
-                delay(1000L)
-                gameInfo.timePassed += 0.05f
-            }
-        }
 
-        Text(text = "${gameInfo.timePassed}")
         LinearProgressIndicator(
             progress = gameInfo.timePassed/1f,
             color = MaterialTheme.colorScheme.secondary,
@@ -208,7 +211,7 @@ fun VerticalGameScreen(navigationController: NavHostController, viewModel: MyVie
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: MyViewModel, gameInfo: GameInfo) {
+fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: MyViewModel, gameInfo: RememberGameInfo) {
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -289,8 +292,8 @@ fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: My
             gameInfo.randomQuestion.answers.indices.forEach { index ->
                 Button(
                     onClick = {
-                        gameInfo.check = true
-                        gameInfo.userAnswear = index
+                        gameInfo.updateChek(true)
+                        gameInfo.updateUserAnswear(index)
                         gameInfo.enabledButtons[index] = false
                     },
                     shape = RoundedCornerShape(5.dp),
@@ -319,13 +322,6 @@ fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: My
                 }
             }
         }
-        LaunchedEffect(key1 = gameInfo.timePassed) {
-            if (gameInfo.timePassed < 1f) {
-                delay(1000L)
-                gameInfo.timePassed += 0.05f
-            }
-        }
-
         //Text(text = "${gameInfo.timePassed}")
         LinearProgressIndicator(
             progress = gameInfo.timePassed/1f,
