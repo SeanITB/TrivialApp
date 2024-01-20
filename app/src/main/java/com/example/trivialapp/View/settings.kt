@@ -46,13 +46,11 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
         val (difficulty, rounds,time,darkMode, returnMenue) = createRefs()
         val startGuide = createGuidelineFromStart(0.1f)
         val endGuide = createGuidelineFromEnd(0.1f)
-        //var selectedDifficulty by remember { mutableStateOf("") }
         var expanded by remember { mutableStateOf(false) }
         val difficulties = arrayOf("EASY", "NORMAL", "DIFFICULT")
         val arrRounds = arrayOf(5, 10 ,15)
-        //var selectedRounds by remember { mutableStateOf(0) }
-        var arrStatus by rememberSaveable { mutableStateOf(arrayOf(false, false, false)) }
-        var sliderValue by remember { mutableStateOf(0f) }
+        val arrStatus by rememberSaveable { mutableStateOf(arrayOf(false, false, false)) }
+        val sliderValue by remember { mutableStateOf(0f) }
         var finishValue by remember { mutableStateOf("") }
         var timeCount by remember { mutableStateOf(2f) }
         //val settings by remember { mutableStateOf(Settings(difficulties[0], arrRounds[0], finishValue.toInt())) }

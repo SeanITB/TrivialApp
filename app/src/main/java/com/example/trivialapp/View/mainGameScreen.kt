@@ -26,45 +26,34 @@ import androidx.navigation.NavHostController
 import com.example.trivialapp.ViewModel.SettingsViewModel
 import com.example.trivialapp.navigation.Routes
 import kotlinx.coroutines.delay
-import com.example.trivialapp.model.Question
 import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
+import com.example.trivialapp.model.checkAnswer
 import com.example.trivialapp.model.remeberWindowInfo
+import com.example.trivialapp.model.restartRound
 
 @Composable
-fun GameScreen(navigationController: NavHostController, viewModels: SettingsViewModel, gameInfo: GameViewModel) {
+fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     val windowInfo = remeberWindowInfo()
-    //val gameInfo: RememberGameInfo = viewModel()
-    if (gameInfo.timePassed >= 1f || false in gameInfo.enabledButtons) {
-        gameInfo.updateRandomQuestion(Question.values().random())
-        gameInfo.updateTimePass(0.0f)
-        //gameInfo.updateRightAnsers(1)
-        gameInfo.updateRoundCount(1)
-        for (index in gameInfo.enabledButtons.indices) gameInfo.enabledButtons[index] = true
+
+    if (gameVM.timePassed >= 1f || false in gameVM.enabledButtons) {
+        restartRound(gameInfo = gameVM)
     }
-    LaunchedEffect(key1 = gameInfo.timePassed) {
-        if (gameInfo.timePassed < 1f) {
+
+    LaunchedEffect(key1 = gameVM.timePassed) {
+        if (gameVM.timePassed < 1f) {
             delay(1000L)
-            gameInfo.updateTimePass(0.05f)
+            gameVM.updateTimePass(0.05f)
         }
     }
 
-    Text(text = "${gameInfo.timePassed}")
+    Text(text = "${gameVM.timePassed}")
     if (windowInfo.sreenWidthInfo is WindowInfo.WindowType.Compact)
-        VerticalGameScreen(navigationController, viewModels, gameInfo, windowInfo)
+        VerticalGameScreen(navController, settingsVM, gameVM, windowInfo)
     else
-        HoritzontalGameScreen(navigationController, viewModels, gameInfo, windowInfo)
+        HoritzontalGameScreen(navController, settingsVM, gameVM, windowInfo)
     
-    if (gameInfo.roundCount < viewModels.rounds + 1) {
-        if (gameInfo.check == true) {
-            if (gameInfo.randomQuestion.answers[gameInfo.userAnswear].equals(gameInfo.randomQuestion.raightAnswear)) {
-                gameInfo.correctAnswers[gameInfo.userAnswear] = true
-                gameInfo.updateRightAnsers(1)
-            }
-            gameInfo.updateChek(false)
-        }
-    } else
-        navigationController.navigate(Routes.ResultScreen.route)
+    checkAnswer(navController = navController, settingsVM = settingsVM, gameVM = gameVM)
 }
 
 @Composable

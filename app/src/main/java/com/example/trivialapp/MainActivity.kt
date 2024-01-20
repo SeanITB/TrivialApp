@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     val configuration = LocalConfiguration.current
                     NavHost(
                         navController = navigationController,
-                        startDestination = Routes.VerticalGameScreen.route
+                        startDestination = Routes.LunchScreen.route
                     ) {
                         composable(Routes.LunchScreen.route) { LunchScreen(navigationController, settingsViewModel) }
                         composable(Routes.MenuScreen.route,) { MenuScreen(navigationController, settingsViewModel)}
