@@ -22,14 +22,14 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.example.trivialapp.R
-import com.example.trivialapp.ViewModel.MyViewModel
+import com.example.trivialapp.ViewModel.SettingsViewModel
 import com.example.trivialapp.model.WindowInfo
 import com.example.trivialapp.model.remeberWindowInfo
 import com.example.trivialapp.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(navigationController: NavHostController, viewModel: MyViewModel){
+fun MenuScreen(navigationController: NavHostController, viewModel: SettingsViewModel){
     val selectedText by remember { mutableStateOf("EASY") }
     Column (modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         ConstraintLayout(

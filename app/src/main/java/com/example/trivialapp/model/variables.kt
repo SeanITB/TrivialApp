@@ -28,10 +28,5 @@ enum class Question(
         "Jardineria")
 }
 
-data class Settings (
-    val difficulty: String,
-    val rounds: Int,
-    val time: Int,
-    //val darkMode: Boolean
-)
+
 

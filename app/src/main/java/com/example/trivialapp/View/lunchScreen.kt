@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.trivialapp.R
-import com.example.trivialapp.ViewModel.MyViewModel
+import com.example.trivialapp.ViewModel.SettingsViewModel
 import com.example.trivialapp.navigation.Routes
 import kotlinx.coroutines.delay
 
@@ -40,7 +40,7 @@ fun  Splash(alphaAnim: Float){
 }
 
 @Composable
-fun LunchScreen(navigationController: NavController, viewModel: MyViewModel) {
+fun LunchScreen(navigationController: NavController, viewModel: SettingsViewModel) {
     var startAnimation by remember { mutableStateOf(false) }
     val alphaAnim = animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,

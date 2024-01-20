@@ -8,21 +8,18 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
-import com.example.trivialapp.ViewModel.MyViewModel
-import com.example.trivialapp.model.RememberGameInfo
+import com.example.trivialapp.ViewModel.SettingsViewModel
+import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.navigation.Routes
 
 @Composable
-fun ResultScreen(navController: NavHostController, myViewModel: MyViewModel, gameInfo: RememberGameInfo){
+fun ResultScreen(navController: NavHostController, settingsViewModel: SettingsViewModel, gameInfo: GameViewModel){
     //val gameInfo = rememberGameInfo()
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
@@ -43,10 +40,10 @@ fun ResultScreen(navController: NavHostController, myViewModel: MyViewModel, gam
         )
         Text(
             text = """
-                Difficulty mode: ${myViewModel.difficulty}
+                Difficulty mode: ${settingsViewModel.difficulty}
                 Right answears: ${gameInfo.rightAnswers}
-                Number of round: ${myViewModel.rounds}
-                Time for round: ${myViewModel.time*10} seconds
+                Number of round: ${settingsViewModel.rounds}
+                Time for round: ${settingsViewModel.time*10} seconds
             """.trimIndent(),
             fontWeight = FontWeight.Bold,
             fontSize = 25.sp,

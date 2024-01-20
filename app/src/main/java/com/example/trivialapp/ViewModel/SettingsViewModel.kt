@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
-class MyViewModel : ViewModel() {
+class SettingsViewModel : ViewModel() {
     var darkThem by mutableStateOf(false)
         private set
 

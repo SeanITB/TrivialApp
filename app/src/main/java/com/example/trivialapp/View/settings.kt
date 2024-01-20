@@ -36,13 +36,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
-import com.example.trivialapp.ViewModel.MyViewModel
-import com.example.trivialapp.model.Settings
+import com.example.trivialapp.ViewModel.SettingsViewModel
 import com.example.trivialapp.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(navigationController: NavHostController, viewModel: MyViewModel) {
+fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsViewModel) {
     ConstraintLayout(modifier = Modifier.fillMaxSize()){
         val (difficulty, rounds,time,darkMode, returnMenue) = createRefs()
         val startGuide = createGuidelineFromStart(0.1f)
