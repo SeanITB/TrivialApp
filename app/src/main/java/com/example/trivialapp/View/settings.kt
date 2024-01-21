@@ -50,10 +50,12 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
         val difficulties = arrayOf("EASY", "NORMAL", "DIFFICULT")
         val arrRounds = arrayOf(5, 10 ,15)
         val arrStatus by rememberSaveable { mutableStateOf(arrayOf(false, false, false)) }
-        val sliderValue by remember { mutableStateOf(0f) }
+        //val sliderValue by remember { mutableStateOf(0f) }
         var finishValue by remember { mutableStateOf("") }
         var timeCount by remember { mutableStateOf(2f) }
-        //val settings by remember { mutableStateOf(Settings(difficulties[0], arrRounds[0], finishValue.toInt())) }
+        var textSize by remember {
+            mutableStateOf(20f)
+        }
         Column (
             modifier = Modifier.constrainAs(difficulty) {
                 top.linkTo(parent.top)
@@ -154,7 +156,41 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
             Slider(
                 value = timeCount,
                 onValueChange = { timeCount = it },
-                onValueChangeFinished = { viewModel.changeTime(sliderValue)},
+                onValueChangeFinished = { viewModel.changeTime(timeCount)},
+                valueRange = 0.1f..2f,
+                steps = 18,
+                modifier = Modifier.fillMaxWidth(),
+                colors = SliderDefaults.colors(
+                    thumbColor = MaterialTheme.colorScheme.secondary,
+                    activeTrackColor = MaterialTheme.colorScheme.secondary,
+                    inactiveTrackColor = MaterialTheme.colorScheme.tertiary
+                )
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .constrainAs(time) {
+                    top.linkTo(rounds.bottom)
+                    bottom.linkTo(darkMode.top)
+                    start.linkTo(startGuide)
+                    end.linkTo(endGuide)
+                }
+        ) {
+            Text(
+                text = """
+                Button text
+                size
+            """.trimIndent(),
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
+            Spacer(modifier = Modifier.padding(16.dp))
+            Slider(
+                value = textSize,
+                onValueChange = { textSize = it },
+                onValueChangeFinished = { viewModel.changeTextSize(textSize.toInt())},
                 valueRange = 0.1f..2f,
                 steps = 18,
                 modifier = Modifier.fillMaxWidth(),

@@ -9,7 +9,7 @@ fun restartRound(gameInfo: GameViewModel) {
     gameInfo.updateRandomQuestion(Question.values().random())
     gameInfo.updateTimePass(0.0f)
     gameInfo.updateRoundCount(1)
-    //for (index in gameInfo.enabledButtons.indices) gameInfo.enabledButtons[index] = true
+    for (index in gameInfo.enabledButtons.indices) gameInfo.enabledButtons[index] = true
 }
 
 fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {

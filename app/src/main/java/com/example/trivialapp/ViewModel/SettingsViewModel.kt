@@ -18,6 +18,9 @@ class SettingsViewModel : ViewModel() {
     var time by mutableStateOf(2f)
         private set
 
+    var textSize by mutableStateOf(20)
+        private set
+
     fun changeDarkThem(value: Boolean) {
         darkThem = value
     }
@@ -32,6 +35,10 @@ class SettingsViewModel : ViewModel() {
 
     fun changeTime(value: Float) {
         time = value
+    }
+
+    fun changeTextSize(valeu: Int) {
+        textSize = valeu
     }
 
 }
