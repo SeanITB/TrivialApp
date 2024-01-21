@@ -89,7 +89,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingVM: Setti
                     end.linkTo(parent.end)
                 }
         ) {
-            AnswersButtons(gameInfo = gameVM, windowInfo = windowInfo)
+            AnswersButtons(gamVM = gameVM, windowInfo = windowInfo)
         }
         LinearProgressIndicator(
             progress = gameVM.timePassed/1f,

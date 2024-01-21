@@ -85,7 +85,7 @@ fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: Se
                     end.linkTo(parent.end)
                 }
         ) {
-            AnswersButtons(gameInfo = gameInfo, windowInfo = windowInfo)
+            AnswersButtons(gamVM = gameInfo, windowInfo = windowInfo)
         }
         //Text(text = "${gameInfo.timePassed}")
         LinearProgressIndicator(
