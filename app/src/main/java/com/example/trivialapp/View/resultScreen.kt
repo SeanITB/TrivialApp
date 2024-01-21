@@ -16,11 +16,14 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.example.trivialapp.ViewModel.SettingsViewModel
 import com.example.trivialapp.ViewModel.GameViewModel
+import com.example.trivialapp.model.WindowInfo
+import com.example.trivialapp.model.remeberWindowInfo
+import com.example.trivialapp.model.restarGame
 import com.example.trivialapp.navigation.Routes
 
 @Composable
-fun ResultScreen(navController: NavHostController, settingsViewModel: SettingsViewModel, gameInfo: GameViewModel){
-    //val gameInfo = rememberGameInfo()
+fun ResultScreen(navController: NavHostController, settingVM: SettingsViewModel, gameVM: GameViewModel){
+    val windowInfo = remeberWindowInfo()
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ){
@@ -40,10 +43,10 @@ fun ResultScreen(navController: NavHostController, settingsViewModel: SettingsVi
         )
         Text(
             text = """
-                Difficulty mode: ${settingsViewModel.difficulty}
-                Right answears: ${gameInfo.rightAnswers}
-                Number of round: ${settingsViewModel.rounds}
-                Time for round: ${settingsViewModel.time*10} seconds
+                Difficulty mode: ${settingVM.difficulty}
+                Right answears: ${gameVM.rightAnswers}
+                Number of round: ${settingVM.rounds}
+                Time for round: ${settingVM.time*10} seconds
             """.trimIndent(),
             fontWeight = FontWeight.Bold,
             fontSize = 25.sp,
@@ -56,7 +59,10 @@ fun ResultScreen(navController: NavHostController, settingsViewModel: SettingsVi
             }
         )
         Button(
-            onClick = { navController.navigate(Routes.VerticalGameScreen.route) },
+            onClick = {
+                restarGame(gameVM)
+                navController.navigate(Routes.GameScreen.route)
+                      },
             shape = RoundedCornerShape(5.dp),
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier

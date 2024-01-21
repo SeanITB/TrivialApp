@@ -4,6 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -25,6 +29,7 @@ import com.example.trivialapp.ui.theme.TrivialAppTheme
 class MainActivity : ComponentActivity() {
     val settingsViewModel by viewModels<SettingsViewModel>()
     val gameInfo by viewModels<GameViewModel>()
+    val time: Int = 1000
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -35,14 +40,33 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navigationController = rememberNavController()
-                    val configuration = LocalConfiguration.current
                     NavHost(
                         navController = navigationController,
-                        startDestination = Routes.LunchScreen.route
+                        startDestination = Routes.LunchScreen.route,
+                        enterTransition = {
+                            fadeIn(animationSpec = tween(time)) + slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left, tween(time)
+                            )
+                        },
+                        exitTransition = {
+                            fadeOut(animationSpec = tween(time)) + slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down, tween(time)
+                            )
+                        },
+                        popEnterTransition = {
+                            fadeIn(animationSpec = tween(time)) + slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up, tween(time)
+                            )
+                        },
+                        popExitTransition = {
+                            fadeOut(animationSpec = tween(time)) + slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right, tween(time)
+                            )
+                        }
                     ) {
                         composable(Routes.LunchScreen.route) { LunchScreen(navigationController, settingsViewModel) }
                         composable(Routes.MenuScreen.route,) { MenuScreen(navigationController, settingsViewModel)}
-                        composable(Routes.VerticalGameScreen.route) { GameScreen(navigationController, settingsViewModel, gameInfo) }
+                        composable(Routes.GameScreen.route) { GameScreen(navigationController, settingsViewModel, gameInfo) }
                         composable(Routes.ResultScreen.route) { ResultScreen(navigationController, settingsViewModel, gameInfo) }
                         composable(Routes.SettingsScreen.route) { SettingsScreen(navigationController, settingsViewModel) }
                     }
@@ -51,4 +75,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

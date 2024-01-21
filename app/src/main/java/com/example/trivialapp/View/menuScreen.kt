@@ -13,9 +13,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -23,14 +20,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.example.trivialapp.R
 import com.example.trivialapp.ViewModel.SettingsViewModel
-import com.example.trivialapp.model.WindowInfo
 import com.example.trivialapp.model.remeberWindowInfo
 import com.example.trivialapp.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(navigationController: NavHostController, viewModel: SettingsViewModel){
-    val selectedText by remember { mutableStateOf("EASY") }
+fun MenuScreen(navController: NavHostController, viewModel: SettingsViewModel){
     Column (modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
@@ -52,10 +47,8 @@ fun MenuScreen(navigationController: NavHostController, viewModel: SettingsViewM
 
             Button(
                     onClick = {
-                        if (windowInfo.sreenWidthInfo is WindowInfo.WindowType.Compact)
-                            navigationController.navigate(Routes.VerticalGameScreen.route)
-                        else
-                              navigationController.navigate(Routes.HoritzontalGameScreen.route)},
+                        navController.navigate(Routes.GameScreen.route)
+                              },
                 shape = RoundedCornerShape(5.dp),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
                 modifier = Modifier
@@ -69,7 +62,7 @@ fun MenuScreen(navigationController: NavHostController, viewModel: SettingsViewM
                 Text(text = "New Game")
             }
             Button(
-                onClick = { navigationController.navigate(Routes.SettingsScreen.route) },
+                onClick = { navController.navigate(Routes.SettingsScreen.route) },
                 shape = RoundedCornerShape(5.dp),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
                 modifier = Modifier

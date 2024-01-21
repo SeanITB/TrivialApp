@@ -25,7 +25,7 @@ import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
 
 @Composable
-fun VerticalGameScreen(navigationController: NavHostController, viewModel: SettingsViewModel, gameInfo: GameViewModel, windowInfo: WindowInfo) {
+fun VerticalGameScreen(navigationController: NavHostController, settingVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -42,10 +42,10 @@ fun VerticalGameScreen(navigationController: NavHostController, viewModel: Setti
                     end.linkTo(parent.end)
                 }
         ) {
-            TopBar(navigationController = navigationController, viewModel = viewModel)
+            TopBar(navigationController = navigationController, viewModel = settingVM)
         }
         Text(
-            text = "Round ${if (gameInfo.roundCount < viewModel.rounds) gameInfo.roundCount else gameInfo.roundCount-1}/${viewModel.rounds}",
+            text = "Round ${if (gameVM.roundCount < settingVM.rounds+1) gameVM.roundCount else gameVM.roundCount-1}/${settingVM.rounds}",
             modifier = Modifier.constrainAs(round) {
                 top.linkTo(diffText.bottom)
                 bottom.linkTo(imgQuestion.top)
@@ -54,7 +54,7 @@ fun VerticalGameScreen(navigationController: NavHostController, viewModel: Setti
             }
         )
         Image(
-            painter = painterResource(id = gameInfo.randomQuestion.img),
+            painter = painterResource(id = gameVM.randomQuestion.img),
             contentDescription = "Image question",
             modifier = Modifier
                 .size(200.dp)
@@ -89,10 +89,10 @@ fun VerticalGameScreen(navigationController: NavHostController, viewModel: Setti
                     end.linkTo(parent.end)
                 }
         ) {
-            AnswersButtons(gameInfo = gameInfo, windowInfo = windowInfo)
+            AnswersButtons(gameInfo = gameVM, windowInfo = windowInfo)
         }
         LinearProgressIndicator(
-            progress = gameInfo.timePassed/1f,
+            progress = gameVM.timePassed/1f,
             color = MaterialTheme.colorScheme.secondary,
             trackColor = MaterialTheme.colorScheme.onTertiary,
             modifier = Modifier

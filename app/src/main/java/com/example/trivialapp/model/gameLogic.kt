@@ -24,3 +24,16 @@ fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel,
     } else
         navController.navigate(Routes.ResultScreen.route)
 }
+
+fun restarGame(gameVM: GameViewModel) {
+    gameVM.updateUserAnswear(0)
+    gameVM.updateChek(false)
+    gameVM.updateRightAnsers(0)
+    gameVM.updateRoundCount(0)
+    for (index in gameVM.enabledButtons.indices){
+        gameVM.enabledButtons[index] = false
+        gameVM.correctAnswers[index] = true
+    }
+    gameVM.updateTimePass(0.0f)
+    gameVM.updateRandomQuestion(Question.values().random())
+}
