@@ -15,11 +15,14 @@ fun restartRound(gameInfo: GameViewModel) {
 fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     if (gameVM.roundCount < settingsVM.rounds + 1) {
         if (gameVM.check == true) {
-            if (gameVM.randomQuestion.answers[gameVM.userAnswear].equals(gameVM.randomQuestion.raightAnswear)) {
+            if (
+                gameVM.animationDone == false &&
+                gameVM.randomQuestion.answers[gameVM.userAnswear].equals(gameVM.randomQuestion.raightAnswear)
+                ) {
                 gameVM.correctAnswers[gameVM.userAnswear] = true
                 gameVM.updateRightAnsers(1)
             }
-            gameVM.updateChek(false)
+            if (gameVM.animationDone == true) gameVM.updateChek(false)
         }
     } else
         navController.navigate(Routes.ResultScreen.route)

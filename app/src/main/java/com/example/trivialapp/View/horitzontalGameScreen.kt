@@ -26,7 +26,7 @@ import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
 
 @Composable
-fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: SettingsViewModel, gameInfo: GameViewModel, windowInfo: WindowInfo) {
+fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -41,10 +41,10 @@ fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: Se
                     end.linkTo(parent.end)
                 }
         ) {
-            TopBar(navigationController = navigationController, viewModel = viewModel)
+            TopBar(navigationController = navigationController, settingsVM = settingsVM, gameVM = gameVM)
             Spacer(modifier = Modifier.width(100.dp))
             Text(
-                text = "Round ${if (gameInfo.roundCount < viewModel.rounds) gameInfo.roundCount else gameInfo.roundCount-1}/${viewModel.rounds}",
+                text = "Round ${if (gameVM.roundCount < settingsVM.rounds) gameVM.roundCount else gameVM.roundCount-1}/${settingsVM.rounds}",
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 20.sp,
@@ -52,7 +52,7 @@ fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: Se
             )
         }
         Image(
-            painter = painterResource(id = gameInfo.randomQuestion.img),
+            painter = painterResource(id = gameVM.randomQuestion.img),
             contentDescription = "Image question",
             modifier = Modifier
                 .size(200.dp)
@@ -85,11 +85,11 @@ fun HoritzontalGameScreen(navigationController: NavHostController, viewModel: Se
                     end.linkTo(parent.end)
                 }
         ) {
-            AnswersButtons(gamVM = gameInfo, windowInfo = windowInfo)
+            AnswersButtons(gameVM = gameVM, windowInfo = windowInfo)
         }
         //Text(text = "${gameInfo.timePassed}")
         LinearProgressIndicator(
-            progress = gameInfo.timePassed/1f,
+            progress = gameVM.timePassed/1f,
             color = MaterialTheme.colorScheme.secondary,
             trackColor = MaterialTheme.colorScheme.onTertiary,
             modifier = Modifier

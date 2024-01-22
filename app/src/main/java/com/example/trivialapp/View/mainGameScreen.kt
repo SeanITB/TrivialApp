@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,11 +36,13 @@ import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
 import com.example.trivialapp.model.checkAnswer
 import com.example.trivialapp.model.remeberWindowInfo
+import com.example.trivialapp.model.restarGame
 import com.example.trivialapp.model.restartRound
 
 @Composable
 fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     val windowInfo = remeberWindowInfo()
+
 
     if (gameVM.timePassed >= 1f || false in gameVM.enabledButtons) {
         restartRound(gameInfo = gameVM)
@@ -51,6 +52,15 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
         if (gameVM.timePassed < 1f) {
             delay(1000L)
             gameVM.updateTimePass(0.05f)
+        }
+    }
+
+    LaunchedEffect(key1 = gameVM.check) {
+        if (gameVM.check == true && gameVM.timeAnimation <= 2) {
+            delay(1000L)
+            gameVM.updateTimeAnimation(1)
+        } else {
+            gameVM.updateAnimationDone(true)
         }
     }
 
@@ -64,9 +74,12 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
 }
 
 @Composable
-fun TopBar(navigationController: NavHostController, viewModel: SettingsViewModel) {
+fun TopBar(navigationController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     Button(
-        onClick = { navigationController.navigate(Routes.MenuScreen.route) },
+        onClick = {
+            navigationController.navigate(Routes.MenuScreen.route)
+            restarGame(gameVM = gameVM)
+                  },
         colors = ButtonDefaults.outlinedButtonColors(Color.Transparent)
     ) {
         Icon(
@@ -76,7 +89,7 @@ fun TopBar(navigationController: NavHostController, viewModel: SettingsViewModel
         )
     }
     Text(
-        text = "${viewModel.difficulty} MODE",
+        text = "${settingsVM.difficulty} MODE",
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.background,
         fontSize = 20.sp,
@@ -85,10 +98,10 @@ fun TopBar(navigationController: NavHostController, viewModel: SettingsViewModel
 }
 
 @Composable
-fun AnswersButtons (gamVM: GameViewModel, windowInfo: WindowInfo) {
-    gamVM.randomQuestion.answers.indices.forEach { index ->
+fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
+    gameVM.randomQuestion.answers.indices.forEach { index ->
         val isCeck by remember {
-            mutableStateOf(gamVM.check)
+            mutableStateOf(gameVM.check)
         }
         val transition = updateTransition(
             targetState = isCeck,
@@ -98,18 +111,21 @@ fun AnswersButtons (gamVM: GameViewModel, windowInfo: WindowInfo) {
             transitionSpec = { tween(3000) },
             label = "Color button",
             targetValueByState = {isCeck ->
-                if(isCeck) Color.Green else Color.Red
+                if(isCeck)
+                    Color.Green
+                else
+                    Color.Red
             }
         )
         Button(
             onClick = {
-                gamVM.updateChek(true)
-                gamVM.updateUserAnswear(index)
-                gamVM.enabledButtons[index] = false
+                gameVM.updateChek(true)
+                gameVM.updateUserAnswear(index)
+                gameVM.enabledButtons[index] = false
             },
             shape = RoundedCornerShape(5.dp),
             modifier = Modifier.width(350.dp),
-            enabled = gamVM.enabledButtons[index],
+            enabled = gameVM.enabledButtons[index],
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.background,
@@ -117,9 +133,8 @@ fun AnswersButtons (gamVM: GameViewModel, windowInfo: WindowInfo) {
                 disabledContentColor = MaterialTheme.colorScheme.primary
             )
         ) {
-
             Text(
-                text = gamVM.randomQuestion.answers[index],
+                text = gameVM.randomQuestion.answers[index],
                 color = MaterialTheme.colorScheme.background,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,

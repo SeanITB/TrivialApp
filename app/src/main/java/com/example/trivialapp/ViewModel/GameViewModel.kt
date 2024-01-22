@@ -31,6 +31,12 @@ class GameViewModel: ViewModel(){
     var randomQuestion by mutableStateOf(Question.values().random())
         private set
 
+    var timeAnimation by mutableStateOf(0)
+        private set
+
+    var animationDone by mutableStateOf(false)
+        private set
+
     fun updateUserAnswear(value: Int) {
         userAnswear = value
     }
@@ -44,7 +50,8 @@ class GameViewModel: ViewModel(){
     }
 
     fun updateRoundCount(value: Int) {
-        roundCount += value
+        if (value == 0) roundCount = value
+        else roundCount += value
     }
 
     fun updateTimePass(value: Float){
@@ -54,5 +61,13 @@ class GameViewModel: ViewModel(){
 
     fun updateRandomQuestion(value: Question) {
         randomQuestion = value
+    }
+
+    fun updateTimeAnimation(value: Int) {
+        timeAnimation += value
+    }
+
+    fun updateAnimationDone(value: Boolean) {
+        animationDone = value
     }
 }

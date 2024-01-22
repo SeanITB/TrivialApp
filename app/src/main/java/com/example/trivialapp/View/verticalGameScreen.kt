@@ -42,7 +42,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingVM: Setti
                     end.linkTo(parent.end)
                 }
         ) {
-            TopBar(navigationController = navigationController, viewModel = settingVM)
+            TopBar(navigationController = navigationController, settingsVM = settingVM, gameVM = gameVM)
         }
         Text(
             text = "Round ${if (gameVM.roundCount < settingVM.rounds+1) gameVM.roundCount else gameVM.roundCount-1}/${settingVM.rounds}",
@@ -89,7 +89,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingVM: Setti
                     end.linkTo(parent.end)
                 }
         ) {
-            AnswersButtons(gamVM = gameVM, windowInfo = windowInfo)
+            AnswersButtons(gameVM = gameVM, windowInfo = windowInfo)
         }
         LinearProgressIndicator(
             progress = gameVM.timePassed/1f,
