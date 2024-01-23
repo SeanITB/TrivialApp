@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.trivialapp.model.Question
+import com.example.trivialapp.model.easyQuestions
 
 class GameViewModel: ViewModel(){
     var userAnswear by mutableStateOf(0)
@@ -25,17 +25,23 @@ class GameViewModel: ViewModel(){
     var correctAnswers by mutableStateOf(arrayOf(false, false, false, false))
         private set
 
+    var textSize by mutableStateOf(20)
+        private set
+
     var timePassed by mutableStateOf(0.0f)
         private set
 
-    var randomQuestion by mutableStateOf(Question.values().random())
+    var randomEasyQuestions by mutableStateOf(easyQuestions.values().random())
         private set
 
     var timeAnimation by mutableStateOf(0)
         private set
 
+    var activeAnimation by mutableStateOf(false)
+        private set
     var animationDone by mutableStateOf(false)
         private set
+
 
     fun updateUserAnswear(value: Int) {
         userAnswear = value
@@ -46,6 +52,7 @@ class GameViewModel: ViewModel(){
     }
 
     fun updateRightAnsers(value: Int) {
+        if (value == 0) roundCount = value
         rightAnswers += value
     }
 
@@ -59,12 +66,20 @@ class GameViewModel: ViewModel(){
         else timePassed += value
     }
 
-    fun updateRandomQuestion(value: Question) {
-        randomQuestion = value
+    fun updateRandomQuestion(value: easyQuestions) {
+        randomEasyQuestions = value
+    }
+
+    fun updateTextSize(value: Int) {
+        textSize = value
     }
 
     fun updateTimeAnimation(value: Int) {
         timeAnimation += value
+    }
+
+    fun updateActiveAnimation(value: Boolean) {
+        activeAnimation = value
     }
 
     fun updateAnimationDone(value: Boolean) {

@@ -6,7 +6,7 @@ import com.example.trivialapp.ViewModel.SettingsViewModel
 import com.example.trivialapp.navigation.Routes
 
 fun restartRound(gameInfo: GameViewModel) {
-    gameInfo.updateRandomQuestion(Question.values().random())
+    gameInfo.updateRandomQuestion(easyQuestions.values().random())
     gameInfo.updateTimePass(0.0f)
     gameInfo.updateRoundCount(1)
     for (index in gameInfo.enabledButtons.indices) gameInfo.enabledButtons[index] = true
@@ -17,12 +17,17 @@ fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel,
         if (gameVM.check == true) {
             if (
                 gameVM.animationDone == false &&
-                gameVM.randomQuestion.answers[gameVM.userAnswear].equals(gameVM.randomQuestion.raightAnswear)
+                gameVM.randomEasyQuestions.answers[gameVM.userAnswear].equals(gameVM.randomEasyQuestions.raightAnswear)
                 ) {
+                gameVM.updateActiveAnimation(true)
                 gameVM.correctAnswers[gameVM.userAnswear] = true
                 gameVM.updateRightAnsers(1)
             }
-            if (gameVM.animationDone == true) gameVM.updateChek(false)
+            if (gameVM.animationDone == true) {
+                gameVM.updateChek(false)
+                gameVM.updateActiveAnimation(false)
+                gameVM.updateAnimationDone(false)
+            }
         }
     } else
         navController.navigate(Routes.ResultScreen.route)
@@ -38,5 +43,5 @@ fun restarGame(gameVM: GameViewModel) {
         gameVM.correctAnswers[index] = true
     }
     gameVM.updateTimePass(0.0f)
-    gameVM.updateRandomQuestion(Question.values().random())
+    gameVM.updateRandomQuestion(easyQuestions.values().random())
 }

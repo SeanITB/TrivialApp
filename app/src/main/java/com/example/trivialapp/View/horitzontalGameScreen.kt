@@ -52,7 +52,7 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
             )
         }
         Image(
-            painter = painterResource(id = gameVM.randomQuestion.img),
+            painter = painterResource(id = gameVM.randomEasyQuestions.img),
             contentDescription = "Image question",
             modifier = Modifier
                 .size(200.dp)

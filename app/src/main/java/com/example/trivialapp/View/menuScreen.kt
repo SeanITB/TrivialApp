@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.example.trivialapp.R
@@ -25,7 +26,7 @@ import com.example.trivialapp.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(navController: NavHostController, viewModel: SettingsViewModel){
+fun MenuScreen(navController: NavHostController, settingsVM: SettingsViewModel){
     Column (modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
@@ -59,7 +60,7 @@ fun MenuScreen(navController: NavHostController, viewModel: SettingsViewModel){
                         end.linkTo(parent.end)
                     }
             ) {
-                Text(text = "New Game")
+                Text(text = "New Game", fontSize = settingsVM.textSize.sp)
             }
             Button(
                 onClick = { navController.navigate(Routes.SettingsScreen.route) },

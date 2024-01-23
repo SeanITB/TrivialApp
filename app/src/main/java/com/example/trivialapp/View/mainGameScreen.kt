@@ -55,14 +55,8 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
         }
     }
 
-    LaunchedEffect(key1 = gameVM.check) {
-        if (gameVM.check == true && gameVM.timeAnimation <= 2) {
-            delay(1000L)
-            gameVM.updateTimeAnimation(1)
-        } else {
-            gameVM.updateAnimationDone(true)
-        }
-    }
+    if (gameVM.activeAnimation == true)
+        animation(gameVM = gameVM)
 
     Text(text = "${gameVM.timePassed}")
     if (windowInfo.sreenWidthInfo is WindowInfo.WindowType.Compact)
@@ -71,6 +65,17 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
         HoritzontalGameScreen(navController, settingsVM, gameVM, windowInfo)
     
     checkAnswer(navController = navController, settingsVM = settingsVM, gameVM = gameVM)
+}
+
+// toDo: No esta entrado en el LunchEffect
+@Composable
+fun animation(gameVM: GameViewModel){
+    LaunchedEffect(key1 = gameVM.timeAnimation) {
+        delay(2000L)
+        if (gameVM.timeAnimation < 1) {
+            gameVM.updateTimeAnimation(1)
+        }
+    }
 }
 
 @Composable
@@ -99,7 +104,7 @@ fun TopBar(navigationController: NavHostController, settingsVM: SettingsViewMode
 
 @Composable
 fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
-    gameVM.randomQuestion.answers.indices.forEach { index ->
+    gameVM.randomEasyQuestions.answers.indices.forEach { index ->
         val isCeck by remember {
             mutableStateOf(gameVM.check)
         }
@@ -108,7 +113,7 @@ fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
             label = null
         )
         val color by transition.animateColor(
-            transitionSpec = { tween(3000) },
+            transitionSpec = { tween(2000) },
             label = "Color button",
             targetValueByState = {isCeck ->
                 if(isCeck)
@@ -134,7 +139,7 @@ fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
             )
         ) {
             Text(
-                text = gameVM.randomQuestion.answers[index],
+                text = gameVM.randomEasyQuestions.answers[index],
                 color = MaterialTheme.colorScheme.background,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,

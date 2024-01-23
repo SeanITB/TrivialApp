@@ -2,12 +2,14 @@ package com.example.trivialapp.View
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -27,13 +29,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.example.trivialapp.ViewModel.SettingsViewModel
@@ -41,21 +43,24 @@ import com.example.trivialapp.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsViewModel) {
+fun SettingsScreen(navigationController: NavHostController, settingsVM: SettingsViewModel) {
     ConstraintLayout(modifier = Modifier.fillMaxSize()){
-        val (difficulty, rounds,time,darkMode, returnMenue) = createRefs()
+        val (difficulty, rounds,time, volume, darkMode, returnMenue) = createRefs()
         val startGuide = createGuidelineFromStart(0.1f)
         val endGuide = createGuidelineFromEnd(0.1f)
         var expanded by remember { mutableStateOf(false) }
         val difficulties = arrayOf("EASY", "NORMAL", "DIFFICULT")
         val arrRounds = arrayOf(5, 10 ,15)
-        val arrStatus by rememberSaveable { mutableStateOf(arrayOf(false, false, false)) }
-        //val sliderValue by remember { mutableStateOf(0f) }
-        var finishValue by remember { mutableStateOf("") }
-        var timeCount by remember { mutableStateOf(2f) }
-        var textSize by remember {
-            mutableStateOf(20f)
+        //val arrStatus by rememberSaveable { mutableStateOf(arrayOf(false, false, false)) }
+        var selectedOption by remember {
+            mutableStateOf(arrRounds[0])
         }
+        var sliderValueText by remember { mutableStateOf(settingsVM.textSize.toFloat()) }
+        var finishValueTime by remember { mutableStateOf(settingsVM.time.toFloat()) }
+        var timeCount by remember { mutableStateOf(2f) }
+        //var textSize by remember {
+        //    mutableStateOf(20f)
+        //}
         Column (
             modifier = Modifier.constrainAs(difficulty) {
                 top.linkTo(parent.top)
@@ -66,31 +71,35 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
             Row {
                 Text(text = "Difficulty", fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.padding(16.dp))
-                OutlinedTextField(
-                    value = viewModel.difficulty,
-                    onValueChange = { viewModel.changeDifficulty(viewModel.difficulty) },
-                    label = { Text("DIFFICULTY") },
-                    enabled = false,
-                    readOnly = true,
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    ),
-                    modifier = Modifier
-                        .clickable { expanded = true }
-                        .fillMaxWidth(0.6f)
-                )
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                difficulties.forEach { difficulty ->
-                    DropdownMenuItem(text = { Text(text = difficulty) }, onClick = {
-                        expanded = false
-                        viewModel.changeDifficulty(difficulty)
-                    })
+                Box(
+                    //contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxWidth(0.65f)
+                ) {
+                    OutlinedTextField(
+                        value = settingsVM.difficulty,
+                        onValueChange = { settingsVM.changeDifficulty(settingsVM.difficulty) },
+                        label = { Text("DIFFICULTY") },
+                        enabled = false,
+                        readOnly = true,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        ),
+                        modifier = Modifier
+                            .clickable { expanded = true }
+                            .fillMaxWidth(0.6f)
+                    )
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier
+                    ) {
+                        difficulties.forEach { difficulty ->
+                            DropdownMenuItem(text = { Text(text = difficulty) }, onClick = {
+                                expanded = false
+                                settingsVM.changeDifficulty(difficulty)
+                            })
+                        }
+                    }
                 }
             }
         }
@@ -107,16 +116,11 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
             Text(text = "Rounds", fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.padding(16.dp))
             Column {
-                arrRounds.indices.forEach { index ->
+                arrRounds.forEach { round ->
                     Row(modifier = Modifier.fillMaxWidth(0.6f)) {
                         RadioButton(
-                            selected = arrStatus[index],
-                            onClick = {
-                                arrStatus[index] = !arrStatus[index]
-                                if (arrStatus[0] == true) viewModel.changeRouunds(arrRounds[0])
-                                else if (arrStatus[1] == true) viewModel.changeRouunds(arrRounds[1])
-                                else viewModel.changeRouunds(arrRounds[2])
-                                      },
+                            selected = round == selectedOption,
+                            onClick = { selectedOption = round},
                             colors = RadioButtonDefaults.colors(
                                 selectedColor = MaterialTheme.colorScheme.secondary,
                                 unselectedColor = MaterialTheme.colorScheme.tertiary
@@ -124,7 +128,7 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
                         )
                         Spacer(modifier = Modifier.padding(6.dp))
                         Text(
-                            text = "${arrRounds[index]}",
+                            text = "$round",
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.align(Alignment.CenterVertically)
@@ -138,7 +142,7 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
                 .fillMaxWidth(0.8f)
                 .constrainAs(time) {
                     top.linkTo(rounds.bottom)
-                    bottom.linkTo(darkMode.top)
+                    bottom.linkTo(volume.top)
                     start.linkTo(startGuide)
                     end.linkTo(endGuide)
                 }
@@ -154,9 +158,9 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
             )
             Spacer(modifier = Modifier.padding(16.dp))
             Slider(
-                value = timeCount,
-                onValueChange = { timeCount = it },
-                onValueChangeFinished = { viewModel.changeTime(timeCount)},
+                value = finishValueTime,
+                onValueChange = { finishValueTime = it },
+                onValueChangeFinished = { settingsVM.changeTime(finishValueTime)},
                 valueRange = 0.1f..2f,
                 steps = 18,
                 modifier = Modifier.fillMaxWidth(),
@@ -170,8 +174,8 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
         Row(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
-                .constrainAs(time) {
-                    top.linkTo(rounds.bottom)
+                .constrainAs(volume) {
+                    top.linkTo(time.bottom)
                     bottom.linkTo(darkMode.top)
                     start.linkTo(startGuide)
                     end.linkTo(endGuide)
@@ -179,7 +183,7 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
         ) {
             Text(
                 text = """
-                Button text
+                Text
                 size
             """.trimIndent(),
                 fontWeight = FontWeight.Bold,
@@ -188,10 +192,10 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
             )
             Spacer(modifier = Modifier.padding(16.dp))
             Slider(
-                value = textSize,
-                onValueChange = { textSize = it },
-                onValueChangeFinished = { viewModel.changeTextSize(textSize.toInt())},
-                valueRange = 0.1f..2f,
+                value = sliderValueText,
+                onValueChange = { sliderValueText = it},
+                onValueChangeFinished = { settingsVM.changeTextSize(sliderValueText.toInt())},
+                valueRange = 0.1f..30f,
                 steps = 18,
                 modifier = Modifier.fillMaxWidth(),
                 colors = SliderDefaults.colors(
@@ -218,7 +222,7 @@ fun SettingsScreen(navigationController: NavHostController, viewModel: SettingsV
                 modifier = Modifier.align(Alignment.CenterVertically)
                 )
             Spacer(modifier = Modifier.padding(16.dp))
-            Switch(checked = viewModel.darkThem, onCheckedChange = {viewModel.changeDarkThem(!viewModel.darkThem)})
+            Switch(checked = settingsVM.darkThem, onCheckedChange = {settingsVM.changeDarkThem(!settingsVM.darkThem)})
         }
         Button(
             onClick = {navigationController.navigate(Routes.MenuScreen.route)},

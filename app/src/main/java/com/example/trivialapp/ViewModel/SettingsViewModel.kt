@@ -3,6 +3,8 @@ package com.example.trivialapp.ViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 
 class SettingsViewModel : ViewModel() {
@@ -37,6 +39,14 @@ class SettingsViewModel : ViewModel() {
         time = value
     }
 
+    /*
+    fun getTextSize(): Float {
+        val result: Float
+        result = textSize.toString().toFloat()
+        return result
+    }
+
+     */
     fun changeTextSize(valeu: Int) {
         textSize = valeu
     }
