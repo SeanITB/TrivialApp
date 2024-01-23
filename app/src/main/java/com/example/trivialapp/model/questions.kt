@@ -2,7 +2,13 @@ package com.example.trivialapp.model
 
 import com.example.trivialapp.R
 
-enum class easyQuestions(
+data class Question (
+    val img: Int,
+    val question: String,
+    val answers: Array<String>,
+    val raightAnswear: String,
+)
+enum class EasyQuestions(
     val img: Int,
     val answers: Array<String>,
     val raightAnswear: String
@@ -28,7 +34,7 @@ enum class easyQuestions(
         "Jardineria")
 }
 
-enum class normalQuestions(
+enum class NormalQuestions(
     val img: Int,
     val question: String,
     val answers: Array<String>,
@@ -54,7 +60,7 @@ enum class normalQuestions(
     )
 }
 
-enum class difficultQuestions(
+enum class DifficultQuestions(
     val img: Int,
     val question: String,
     val answers: Array<String>,

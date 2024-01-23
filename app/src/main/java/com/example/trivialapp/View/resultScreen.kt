@@ -60,7 +60,7 @@ fun ResultScreen(navController: NavHostController, settingVM: SettingsViewModel,
         )
         Button(
             onClick = {
-                restarGame(gameVM)
+                restarGame(settingVM, gameVM)
                 navController.navigate(Routes.GameScreen.route)
                       },
             shape = RoundedCornerShape(5.dp),

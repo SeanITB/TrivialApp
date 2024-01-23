@@ -35,6 +35,7 @@ import kotlinx.coroutines.delay
 import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
 import com.example.trivialapp.model.checkAnswer
+import com.example.trivialapp.model.createQuestion
 import com.example.trivialapp.model.remeberWindowInfo
 import com.example.trivialapp.model.restarGame
 import com.example.trivialapp.model.restartRound
@@ -43,9 +44,10 @@ import com.example.trivialapp.model.restartRound
 fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     val windowInfo = remeberWindowInfo()
 
+    //createQuestion(settingsVM, gameVM)
 
     if (gameVM.timePassed >= 1f || false in gameVM.enabledButtons) {
-        restartRound(gameInfo = gameVM)
+        restartRound(settingsVM = settingsVM, gameInfo = gameVM)
     }
 
     LaunchedEffect(key1 = gameVM.timePassed) {
@@ -83,7 +85,7 @@ fun TopBar(navigationController: NavHostController, settingsVM: SettingsViewMode
     Button(
         onClick = {
             navigationController.navigate(Routes.MenuScreen.route)
-            restarGame(gameVM = gameVM)
+            restarGame(settingsVM = settingsVM, gameVM = gameVM)
                   },
         colors = ButtonDefaults.outlinedButtonColors(Color.Transparent)
     ) {
