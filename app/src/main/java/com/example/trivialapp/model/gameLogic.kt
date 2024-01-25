@@ -40,7 +40,10 @@ fun restartRound(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     gameVM.updateRandomQuestion(generateRandomQuestion(settingsVM))
     gameVM.updateTimePass(0.0f)
     gameVM.updateRoundCount(1)
-    for (index in gameVM.enabledButtons.indices) gameVM.enabledButtons[index] = true
+    for (index in gameVM.enabledButtons.indices) {
+        gameVM.enabledButtons[index] = true
+        gameVM.correctAnswers[index] = false
+    }
 }
 
 fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
@@ -48,18 +51,18 @@ fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel,
         if (gameVM.check == true) {
             gameVM.randomQuestion.isDone = true
             if (
-                gameVM.animationDone == false &&
+                //gameVM.animationDone == false &&
                 gameVM.randomQuestion.answers[gameVM.userAnswear].equals(gameVM.randomQuestion.raightAnswear)
                 ) {
-                gameVM.updateActiveAnimation(true)
+                //gameVM.updateActiveAnimation(true)
                 gameVM.correctAnswers[gameVM.userAnswear] = true
                 gameVM.updateRightAnsers(1)
             }
-            if (gameVM.animationDone == true) {
+            //if (gameVM.animationDone == true) {
                 gameVM.updateChek(false)
-                gameVM.updateActiveAnimation(false)
-                gameVM.updateAnimationDone(false)
-            }
+                gameVM.updateActiveAnimation(true)
+                //gameVM.updateAnimationDone(false)
+            //}
         }
     } else
         navController.navigate(Routes.ResultScreen.route)
@@ -71,8 +74,8 @@ fun restarGame(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     gameVM.updateRightAnsers(0)
     gameVM.updateRoundCount(0)
     for (index in gameVM.enabledButtons.indices){
-        gameVM.enabledButtons[index] = false
-        gameVM.correctAnswers[index] = true
+        gameVM.enabledButtons[index] = true
+        gameVM.correctAnswers[index] = false
     }
     gameVM.updateTimePass(0.0f)
     gameVM.updateRandomQuestion(generateRandomQuestion(settingsVM))

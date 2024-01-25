@@ -1,6 +1,7 @@
 package com.example.trivialapp.View
 
 import HoritzontalGameScreen
+import android.widget.Toast
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -56,8 +58,8 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
         }
     }
 
-    if (gameVM.activeAnimation == true)
-        animation(gameVM = gameVM)
+    if (gameVM.activeAnimation)
+        Animation(gameVM = gameVM)
 
     Text(text = "${gameVM.timePassed}")
     if (windowInfo.sreenWidthInfo is WindowInfo.WindowType.Compact)
@@ -70,9 +72,11 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
 
 // toDo: No esta entrado en el LunchEffect
 @Composable
-fun animation(gameVM: GameViewModel){
-    LaunchedEffect(key1 = gameVM.timeAnimation) {
+fun Animation(gameVM: GameViewModel){
+    val context = LocalContext.current
+    LaunchedEffect(key1 = gameVM.activeAnimation) {
         delay(2000L)
+        Toast.makeText(context, "Funciona", Toast.LENGTH_LONG).show()
         if (gameVM.timeAnimation < 1) {
             gameVM.updateTimeAnimation(1)
         }
