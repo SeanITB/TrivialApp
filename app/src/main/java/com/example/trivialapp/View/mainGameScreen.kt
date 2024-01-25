@@ -35,7 +35,6 @@ import kotlinx.coroutines.delay
 import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
 import com.example.trivialapp.model.checkAnswer
-import com.example.trivialapp.model.createQuestion
 import com.example.trivialapp.model.remeberWindowInfo
 import com.example.trivialapp.model.restarGame
 import com.example.trivialapp.model.restartRound
@@ -47,7 +46,7 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
     //createQuestion(settingsVM, gameVM)
 
     if (gameVM.timePassed >= 1f || false in gameVM.enabledButtons) {
-        restartRound(settingsVM = settingsVM, gameInfo = gameVM)
+        restartRound(settingsVM = settingsVM, gameVM = gameVM)
     }
 
     LaunchedEffect(key1 = gameVM.timePassed) {
@@ -106,7 +105,7 @@ fun TopBar(navigationController: NavHostController, settingsVM: SettingsViewMode
 
 @Composable
 fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
-    gameVM.randomEasyQuestions.answers.indices.forEach { index ->
+    gameVM.randomQuestion.answers.indices.forEach { index ->
         val isCeck by remember {
             mutableStateOf(gameVM.check)
         }
@@ -141,7 +140,7 @@ fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
             )
         ) {
             Text(
-                text = gameVM.randomEasyQuestions.answers[index],
+                text = gameVM.randomQuestion.answers[index],
                 color = MaterialTheme.colorScheme.background,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,

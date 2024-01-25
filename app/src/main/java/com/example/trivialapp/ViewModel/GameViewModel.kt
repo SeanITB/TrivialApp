@@ -4,11 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.trivialapp.model.DifficultQuestions
-import com.example.trivialapp.model.EasyQuestions
-import com.example.trivialapp.model.NormalQuestions
+import com.example.trivialapp.model.Question
 
 class GameViewModel: ViewModel(){
+
     var userAnswear by mutableStateOf(0)
         private set
 
@@ -33,13 +32,7 @@ class GameViewModel: ViewModel(){
     var timePassed by mutableStateOf(0.0f)
         private set
 
-    var randomEasyQuestions by mutableStateOf(EasyQuestions.values().random())
-        private set
-
-    var randomNormalQuestions by mutableStateOf(NormalQuestions.values().random())
-        private set
-
-    var randomDifficultQuestion by mutableStateOf(DifficultQuestions.values().random())
+    var randomQuestion by mutableStateOf(Question.values().random())
         private set
 
     var timeAnimation by mutableStateOf(0)
@@ -74,20 +67,8 @@ class GameViewModel: ViewModel(){
         else timePassed += value
     }
 
-    fun updateEasyRandomQuestion(value: EasyQuestions) {
-        randomEasyQuestions = value
-    }
-
-    fun updateNormalRandomQuestion(value: NormalQuestions) {
-        randomNormalQuestions = value
-    }
-
-    fun updateDifficultRandomQuestion(value: DifficultQuestions) {
-        randomDifficultQuestion = value
-    }
-
-    fun updateTextSize(value: Int) {
-        textSize = value
+    fun updateRandomQuestion(value: Question) {
+        randomQuestion = value
     }
 
     fun updateTimeAnimation(value: Int) {

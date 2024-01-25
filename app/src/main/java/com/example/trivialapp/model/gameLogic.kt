@@ -5,26 +5,51 @@ import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.ViewModel.SettingsViewModel
 import com.example.trivialapp.navigation.Routes
 
-fun createQuestion(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
-    when (settingsVM.difficulty) {
-        "EASY" -> gameVM.updateEasyRandomQuestion(EasyQuestions.values().random())
-        "NORMAL" -> gameVM.updateNormalRandomQuestion(NormalQuestions.values().random())
-        else -> gameVM.updateDifficultRandomQuestion(DifficultQuestions.values().random())
+fun generateRandomQuestion(settingsVM: SettingsViewModel): Question{
+    val easyQuestions: MutableList<Question> = mutableListOf()
+    val normalQuestions: MutableList<Question> = mutableListOf()
+    val difficultQuesstions: MutableList<Question> = mutableListOf()
+
+    // Clasifica els valors segons la dificultad i si ja s'han fet
+    for (question in Question.values()) {
+        when (question.difficulty) {
+            'E' -> {
+                if (question.isDone == false)
+                    easyQuestions.add(question)
+            }
+            'N' -> {
+                if (question.isDone == false)
+                    normalQuestions.add(question)
+            }
+            else -> {
+                if (question.isDone == false)
+                    difficultQuesstions.add(question)
+            }
+        }
     }
+
+    // Es guarda la pregunta
+    val selectedQuestion = when (settingsVM.difficulty) {
+        "EASY" -> easyQuestions.random()
+        "NORMAL" -> normalQuestions.random()
+        else -> difficultQuesstions.random()
+    }
+    return selectedQuestion
 }
-fun restartRound(settingsVM: SettingsViewModel, gameInfo: GameViewModel) {
-    createQuestion(settingsVM, gameInfo)
-    gameInfo.updateTimePass(0.0f)
-    gameInfo.updateRoundCount(1)
-    for (index in gameInfo.enabledButtons.indices) gameInfo.enabledButtons[index] = true
+fun restartRound(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
+    gameVM.updateRandomQuestion(generateRandomQuestion(settingsVM))
+    gameVM.updateTimePass(0.0f)
+    gameVM.updateRoundCount(1)
+    for (index in gameVM.enabledButtons.indices) gameVM.enabledButtons[index] = true
 }
 
 fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     if (gameVM.roundCount < settingsVM.rounds + 1) {
         if (gameVM.check == true) {
+            gameVM.randomQuestion.isDone = true
             if (
                 gameVM.animationDone == false &&
-                gameVM.randomEasyQuestions.answers[gameVM.userAnswear].equals(gameVM.randomEasyQuestions.raightAnswear)
+                gameVM.randomQuestion.answers[gameVM.userAnswear].equals(gameVM.randomQuestion.raightAnswear)
                 ) {
                 gameVM.updateActiveAnimation(true)
                 gameVM.correctAnswers[gameVM.userAnswear] = true
@@ -50,5 +75,5 @@ fun restarGame(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
         gameVM.correctAnswers[index] = true
     }
     gameVM.updateTimePass(0.0f)
-    createQuestion(settingsVM, gameVM)
+    gameVM.updateRandomQuestion(generateRandomQuestion(settingsVM))
 }

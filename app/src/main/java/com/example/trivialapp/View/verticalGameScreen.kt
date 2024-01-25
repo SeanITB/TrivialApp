@@ -54,7 +54,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingVM: Setti
             }
         )
         Image(
-            painter = painterResource(id = gameVM.randomEasyQuestions.img),
+            painter = painterResource(id = gameVM.randomQuestion.img),
             contentDescription = "Image question",
             modifier = Modifier
                 .size(200.dp)

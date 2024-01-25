@@ -20,13 +20,15 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.example.trivialapp.R
+import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.ViewModel.SettingsViewModel
 import com.example.trivialapp.model.remeberWindowInfo
+import com.example.trivialapp.model.restarGame
 import com.example.trivialapp.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(navController: NavHostController, settingsVM: SettingsViewModel){
+fun MenuScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel){
     Column (modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
@@ -48,6 +50,7 @@ fun MenuScreen(navController: NavHostController, settingsVM: SettingsViewModel){
 
             Button(
                     onClick = {
+                        restarGame(settingsVM,gameVM)
                         navController.navigate(Routes.GameScreen.route)
                               },
                 shape = RoundedCornerShape(5.dp),
