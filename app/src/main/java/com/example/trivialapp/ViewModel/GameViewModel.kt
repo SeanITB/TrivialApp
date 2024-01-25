@@ -75,7 +75,8 @@ class GameViewModel: ViewModel(){
     }
 
     fun updateTimeAnimation(value: Int) {
-        timeAnimation += value
+        if (value == 0) timeAnimation = value
+        else timeAnimation += value
     }
 
     fun updateActiveAnimation(value: Boolean) {

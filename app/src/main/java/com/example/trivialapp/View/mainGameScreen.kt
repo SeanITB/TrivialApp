@@ -47,7 +47,7 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
 
     //createQuestion(settingsVM, gameVM)
 
-    if (gameVM.timePassed >= 1f || false in gameVM.enabledButtons) {
+    if (gameVM.timePassed >= 1f || gameVM.nextQuestion) {
         restartRound(settingsVM = settingsVM, gameVM = gameVM)
     }
 
@@ -58,8 +58,7 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
         }
     }
 
-    if (gameVM.activeAnimation)
-        Animation(gameVM = gameVM)
+
 
     Text(text = "${gameVM.timePassed}")
     if (windowInfo.sreenWidthInfo is WindowInfo.WindowType.Compact)
@@ -68,17 +67,22 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
         HoritzontalGameScreen(navController, settingsVM, gameVM, windowInfo)
     
     checkAnswer(navController = navController, settingsVM = settingsVM, gameVM = gameVM)
+
+    if (gameVM.activeAnimation == true)
+        Animation(gameVM = gameVM)
 }
 
 // toDo: No esta entrado en el LunchEffect
 @Composable
 fun Animation(gameVM: GameViewModel){
     val context = LocalContext.current
-    LaunchedEffect(key1 = gameVM.activeAnimation) {
-        delay(2000L)
-        Toast.makeText(context, "Funciona", Toast.LENGTH_LONG).show()
+    LaunchedEffect(key1 = gameVM.timeAnimation) {
         if (gameVM.timeAnimation < 1) {
+            delay(2000L)
+            Toast.makeText(context, "Funciona", Toast.LENGTH_LONG).show()
             gameVM.updateTimeAnimation(1)
+        } else {
+            gameVM.updateNextQuestion(true)
         }
     }
 }
@@ -110,6 +114,7 @@ fun TopBar(navigationController: NavHostController, settingsVM: SettingsViewMode
 @Composable
 fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
     gameVM.randomQuestion.answers.indices.forEach { index ->
+
         val isCeck by remember {
             mutableStateOf(gameVM.check)
         }
@@ -127,6 +132,8 @@ fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
                     Color.Red
             }
         )
+
+
         Button(
             onClick = {
                 gameVM.updateChek(true)

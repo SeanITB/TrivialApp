@@ -44,12 +44,16 @@ fun restartRound(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
         gameVM.enabledButtons[index] = true
         gameVM.correctAnswers[index] = false
     }
+    gameVM.updateNextQuestion(false)
+    gameVM.updateActiveAnimation(false)
+    gameVM.updateTimeAnimation(0)
 }
 
 fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     if (gameVM.roundCount < settingsVM.rounds + 1) {
         if (gameVM.check == true) {
             gameVM.randomQuestion.isDone = true
+            gameVM.enabledButtons[gameVM.userAnswear] = false
             if (
                 //gameVM.animationDone == false &&
                 gameVM.randomQuestion.answers[gameVM.userAnswear].equals(gameVM.randomQuestion.raightAnswear)
