@@ -28,6 +28,7 @@ enum class easyQuestions(
         "Jardineria")
 }
 
+/*
 enum class normalQuestions(
     val img: Int,
     val question: String,
@@ -79,6 +80,8 @@ enum class difficultQuestions(
         "Erosion"
     )
 }
+
+ */
 
 
 

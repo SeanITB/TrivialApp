@@ -39,7 +39,10 @@ class GameViewModel: ViewModel(){
 
     var activeAnimation by mutableStateOf(false)
         private set
-    var animationDone by mutableStateOf(false)
+    //var animationDone by mutableStateOf(false)
+        //private set
+
+    var nextQuestion by mutableStateOf(false)
         private set
 
 
@@ -81,8 +84,15 @@ class GameViewModel: ViewModel(){
     fun updateActiveAnimation(value: Boolean) {
         activeAnimation = value
     }
+    /*
 
     fun updateAnimationDone(value: Boolean) {
         animationDone = value
+    }
+
+     */
+
+    fun updateNextQuestion(value: Boolean) {
+        this.nextQuestion = value
     }
 }
