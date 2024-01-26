@@ -68,6 +68,7 @@ class GameViewModel: ViewModel(){
         else this.timePassed += value
     }
 
+
     fun updateRandomQuestion(value: Question) {
         this.randomQuestion = value
     }

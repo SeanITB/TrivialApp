@@ -45,20 +45,17 @@ import com.example.trivialapp.model.restartRound
 fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     val windowInfo = remeberWindowInfo()
 
-    //createQuestion(settingsVM, gameVM)
-
-    if (gameVM.timePassed >= 1f || gameVM.nextQuestion) {
+    if (gameVM.timePassed >= settingsVM.time || gameVM.nextQuestion) {
         restartRound(settingsVM = settingsVM, gameVM = gameVM)
     }
 
     LaunchedEffect(key1 = gameVM.timePassed) {
-        if (gameVM.timePassed < 1f) {
+        if (gameVM.timePassed < settingsVM.time) {
             delay(1000L)
             gameVM.updateTimePass(1)
         }
     }
 
-    Text(text = "${gameVM.timePassed}")
     if (windowInfo.sreenWidthInfo is WindowInfo.WindowType.Compact)
         VerticalGameScreen(navController, settingsVM, gameVM, windowInfo)
     else
@@ -109,9 +106,10 @@ fun TopBar(navigationController: NavHostController, settingsVM: SettingsViewMode
 }
 
 @Composable
-fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
+fun AnswersButtons (settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
     gameVM.randomQuestion.answers.indices.forEach { index ->
 
+        /*
         val isCeck by remember {
             mutableStateOf(gameVM.check)
         }
@@ -129,6 +127,8 @@ fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
                     Color.Red
             }
         )
+
+         */
 
         Button(
             onClick = {
@@ -151,7 +151,7 @@ fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
                 color = MaterialTheme.colorScheme.background,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                fontSize = 20.sp,
+                fontSize = settingsVM.textSize.sp,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
             if (windowInfo.sreenWidthInfo is WindowInfo.WindowType.Compact)

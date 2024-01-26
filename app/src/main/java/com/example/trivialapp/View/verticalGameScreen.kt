@@ -20,6 +20,9 @@ import com.example.trivialapp.ViewModel.SettingsViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.painterResource
 import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
@@ -46,6 +49,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
         }
         Text(
             text = "Round ${if (gameVM.roundCount < settingsVM.rounds+1) gameVM.roundCount else gameVM.roundCount-1}/${settingsVM.rounds}",
+            fontSize = settingsVM.textSize.sp,
             modifier = Modifier.constrainAs(round) {
                 top.linkTo(diffText.bottom)
                 bottom.linkTo(imgQuestion.top)
@@ -66,10 +70,10 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
                 }
         )
         Text(
-            text = "¿Qué y para qué sirve?",
+            text = gameVM.randomQuestion.question,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
+            fontSize = settingsVM.textSize.sp,
             modifier = Modifier.constrainAs(question) {
                 top.linkTo(question.bottom)
                 bottom.linkTo(answer.top)
@@ -89,10 +93,11 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
                     end.linkTo(parent.end)
                 }
         ) {
-            AnswersButtons(gameVM = gameVM, windowInfo = windowInfo)
+            AnswersButtons(settingsVM = settingsVM, gameVM = gameVM, windowInfo = windowInfo)
         }
+
         LinearProgressIndicator(
-            progress = (gameVM.timePassed/settingsVM.time).toFloat(),
+            progress = (gameVM.timePassed.toFloat() * settingsVM.time.toFloat())/100f/1f,
             color = MaterialTheme.colorScheme.secondary,
             trackColor = MaterialTheme.colorScheme.onTertiary,
             modifier = Modifier

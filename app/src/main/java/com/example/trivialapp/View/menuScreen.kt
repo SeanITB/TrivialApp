@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,11 +21,9 @@ import androidx.navigation.NavHostController
 import com.example.trivialapp.R
 import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.ViewModel.SettingsViewModel
-import com.example.trivialapp.model.remeberWindowInfo
 import com.example.trivialapp.model.restarGame
 import com.example.trivialapp.navigation.Routes
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel){
     Column (modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
@@ -35,7 +32,6 @@ fun MenuScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
         ){
             val (imgPenjat, opcions, jugar, ajuda) = createRefs()
             val topGuide = createGuidelineFromTop(0.2f)
-            val windowInfo = remeberWindowInfo()
             Image(painter = painterResource(id = R.drawable.ic_launcher_foreground),
                 contentDescription = "logo",
                 modifier = Modifier
@@ -47,7 +43,6 @@ fun MenuScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
                         end.linkTo(parent.end)
                     }
             )
-
             Button(
                     onClick = {
                         restarGame(settingsVM,gameVM)
@@ -76,7 +71,7 @@ fun MenuScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
                         start.linkTo(jugar.start)
                     }
             ) {
-                Text(text = "Settings")
+                Text(text = "Settings", fontSize = settingsVM.textSize.sp)
             }
         }
     }

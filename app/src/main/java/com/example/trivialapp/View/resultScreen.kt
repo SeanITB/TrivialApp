@@ -23,19 +23,18 @@ import com.example.trivialapp.navigation.Routes
 
 @Composable
 fun ResultScreen(navController: NavHostController, settingVM: SettingsViewModel, gameVM: GameViewModel){
-    val windowInfo = remeberWindowInfo()
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ){
-        val (msgInicial, msgSecundari, msgPA, imgPenjat, msgErrades, botTJ, botMenu) = createRefs()
+        val (initialMsg, secundaryMsg, butPA, butRG) = createRefs()
         val topGuide = createGuidelineFromTop(0.1f)
         val bottomGuide = createGuidelineFromBottom(0.2f)
         Text(
             text = "Result of the game",
             fontWeight = FontWeight.Bold,
-            fontSize = 25.sp,
+            fontSize = settingVM.textSize.sp,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.constrainAs(msgInicial) {
+            modifier = Modifier.constrainAs(initialMsg) {
                 top.linkTo(topGuide)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
@@ -46,14 +45,14 @@ fun ResultScreen(navController: NavHostController, settingVM: SettingsViewModel,
                 Difficulty mode: ${settingVM.difficulty}
                 Right answears: ${gameVM.rightAnswers}
                 Number of round: ${settingVM.rounds}
-                Time for round: ${settingVM.time*10} seconds
+                Time for round: ${settingVM.time} seconds
             """.trimIndent(),
             fontWeight = FontWeight.Bold,
-            fontSize = 25.sp,
+            fontSize = settingVM.textSize.sp,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.constrainAs(msgSecundari) {
-                top.linkTo(msgInicial.bottom)
-                bottom.linkTo(botTJ.top)
+            modifier = Modifier.constrainAs(secundaryMsg) {
+                top.linkTo(initialMsg.bottom)
+                bottom.linkTo(butPA.top)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             }
@@ -67,14 +66,14 @@ fun ResultScreen(navController: NavHostController, settingVM: SettingsViewModel,
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier
                 .width(200.dp)
-                .constrainAs(botTJ) {
-                    top.linkTo(msgPA.top)
+                .constrainAs(butPA) {
+                    top.linkTo(secundaryMsg.top)
                     bottom.linkTo(bottomGuide)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
         ) {
-            Text(text = "Juga un altre cop")
+            Text(text = "Play Again", fontSize = settingVM.textSize.sp)
         }
         Button(
             onClick = { navController.navigate(Routes.MenuScreen.route) },
@@ -82,12 +81,12 @@ fun ResultScreen(navController: NavHostController, settingVM: SettingsViewModel,
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier
                 .width(200.dp)
-                .constrainAs(botMenu) {
-                    top.linkTo(botTJ.bottom, margin = 15.dp)
-                    start.linkTo(botTJ.start)
+                .constrainAs(butRG) {
+                    top.linkTo(butPA.bottom, margin = 15.dp)
+                    start.linkTo(butPA.start)
                 }
         ) {
-            Text(text = "Return to menu")
+            Text(text = "Return to menu", fontSize = settingVM.textSize.sp)
         }
     }
 }

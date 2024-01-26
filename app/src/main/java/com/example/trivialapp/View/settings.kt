@@ -2,6 +2,7 @@ package com.example.trivialapp.View
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -51,16 +52,11 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
         var expanded by remember { mutableStateOf(false) }
         val difficulties = arrayOf("EASY", "NORMAL", "DIFFICULT")
         val arrRounds = arrayOf(5, 10 ,15)
-        //val arrStatus by rememberSaveable { mutableStateOf(arrayOf(false, false, false)) }
         var selectedOption by remember {
             mutableStateOf(arrRounds[0])
         }
         var sliderValueText by remember { mutableStateOf(settingsVM.textSize.toFloat()) }
         var finishValueTime by remember { mutableStateOf(settingsVM.time.toFloat()) }
-        var timeCount by remember { mutableStateOf(2f) }
-        //var textSize by remember {
-        //    mutableStateOf(20f)
-        //}
         Column (
             modifier = Modifier.constrainAs(difficulty) {
                 top.linkTo(parent.top)
@@ -69,11 +65,11 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
             }
         ) {
             Row {
-                Text(text = "Difficulty", fontWeight = FontWeight.Bold)
+                Text(text = "Difficulty", fontWeight = FontWeight.Bold, fontSize = settingsVM.textSize.sp)
                 Spacer(modifier = Modifier.padding(16.dp))
                 Box(
                     //contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxWidth(0.65f)
+                    modifier = Modifier.fillMaxWidth(0.72f)
                 ) {
                     OutlinedTextField(
                         value = settingsVM.difficulty,
@@ -113,7 +109,7 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
                     end.linkTo(endGuide)
                 }
         ) {
-            Text(text = "Rounds", fontWeight = FontWeight.Bold)
+            Text(text = "Rounds", fontWeight = FontWeight.Bold, fontSize = settingsVM.textSize.sp)
             Spacer(modifier = Modifier.padding(16.dp))
             Column {
                 arrRounds.forEach { round ->
@@ -131,6 +127,7 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
                             text = "$round",
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
+                            fontSize = settingsVM.textSize.sp,
                             modifier = Modifier.align(Alignment.CenterVertically)
                         )
                     }
@@ -154,22 +151,29 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
             """.trimIndent(),
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
+                fontSize = settingsVM.textSize.sp,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
             Spacer(modifier = Modifier.padding(16.dp))
-            Slider(
-                value = finishValueTime,
-                onValueChange = { finishValueTime = it },
-                onValueChangeFinished = { settingsVM.changeTime(finishValueTime.toInt())},
-                valueRange = 0.1f..2f,
-                steps = 18,
-                modifier = Modifier.fillMaxWidth(),
-                colors = SliderDefaults.colors(
-                    thumbColor = MaterialTheme.colorScheme.secondary,
-                    activeTrackColor = MaterialTheme.colorScheme.secondary,
-                    inactiveTrackColor = MaterialTheme.colorScheme.tertiary
+            Column(
+                modifier = Modifier,
+                verticalArrangement = Arrangement.SpaceBetween,
+                //horizontalAlignment = Alignment.Horizontal()
+            ){
+                Slider(
+                    value = finishValueTime,
+                    onValueChange = { finishValueTime = it },
+                    onValueChangeFinished = { settingsVM.changeTime(finishValueTime.toInt())},
+                    valueRange = 10f..30f,
+                    steps = 18,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = SliderDefaults.colors(
+                        thumbColor = MaterialTheme.colorScheme.secondary,
+                        activeTrackColor = MaterialTheme.colorScheme.secondary,
+                        inactiveTrackColor = MaterialTheme.colorScheme.tertiary
+                    )
                 )
-            )
+            }
         }
         Row(
             modifier = Modifier
@@ -188,6 +192,7 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
             """.trimIndent(),
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
+                fontSize = settingsVM.textSize.sp,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
             Spacer(modifier = Modifier.padding(16.dp))
@@ -195,7 +200,7 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
                 value = sliderValueText,
                 onValueChange = { sliderValueText = it},
                 onValueChangeFinished = { settingsVM.changeTextSize(sliderValueText.toInt())},
-                valueRange = 0.1f..30f,
+                valueRange = 15f..25f,
                 steps = 18,
                 modifier = Modifier.fillMaxWidth(),
                 colors = SliderDefaults.colors(
@@ -219,6 +224,7 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
                 text = "Dark Mode",
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
+                fontSize = settingsVM.textSize.sp,
                 modifier = Modifier.align(Alignment.CenterVertically)
                 )
             Spacer(modifier = Modifier.padding(16.dp))
@@ -236,7 +242,7 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
 
             }
         ) {
-            Text(text = "Return to menu")
+            Text(text = "Save and return", fontSize = settingsVM.textSize.sp)
         }
     }
 

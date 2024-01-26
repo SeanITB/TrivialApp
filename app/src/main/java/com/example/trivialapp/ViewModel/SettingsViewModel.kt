@@ -17,7 +17,7 @@ class SettingsViewModel : ViewModel() {
     var rounds by mutableStateOf(5)
         private set
 
-    var time by mutableStateOf(2)
+    var time by mutableStateOf(20)
         private set
 
     var textSize by mutableStateOf(20)
@@ -39,14 +39,6 @@ class SettingsViewModel : ViewModel() {
         time = value
     }
 
-    /*
-    fun getTextSize(): Float {
-        val result: Float
-        result = textSize.toString().toFloat()
-        return result
-    }
-
-     */
     fun changeTextSize(valeu: Int) {
         textSize = valeu
     }

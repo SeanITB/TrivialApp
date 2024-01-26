@@ -47,7 +47,7 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
                 text = "Round ${if (gameVM.roundCount < settingsVM.rounds) gameVM.roundCount else gameVM.roundCount-1}/${settingsVM.rounds}",
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
-                fontSize = 20.sp,
+                fontSize = settingsVM.textSize.sp,
                 modifier = Modifier.padding(10.dp)
             )
         }
@@ -64,7 +64,7 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
                 }
         )
         Text(
-            text = "¿Qué y para qué sirve?",
+            text = gameVM.randomQuestion.question,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
@@ -85,7 +85,7 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
                     end.linkTo(parent.end)
                 }
         ) {
-            AnswersButtons(gameVM = gameVM, windowInfo = windowInfo)
+            AnswersButtons(settingsVM = settingsVM, gameVM = gameVM, windowInfo = windowInfo)
         }
         //Text(text = "${gameInfo.timePassed}")
         LinearProgressIndicator(
