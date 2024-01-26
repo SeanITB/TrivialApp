@@ -54,11 +54,9 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
     LaunchedEffect(key1 = gameVM.timePassed) {
         if (gameVM.timePassed < 1f) {
             delay(1000L)
-            gameVM.updateTimePass(0.05f)
+            gameVM.updateTimePass(1)
         }
     }
-
-
 
     Text(text = "${gameVM.timePassed}")
     if (windowInfo.sreenWidthInfo is WindowInfo.WindowType.Compact)
@@ -72,7 +70,6 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
         Animation(gameVM = gameVM)
 }
 
-// toDo: No esta entrado en el LunchEffect
 @Composable
 fun Animation(gameVM: GameViewModel){
     val context = LocalContext.current
@@ -123,16 +120,15 @@ fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
             label = null
         )
         val color by transition.animateColor(
-            transitionSpec = { tween(2000) },
+            //transitionSpec = { tween(2000) },
             label = "Color button",
             targetValueByState = {isCeck ->
-                if(isCeck)
+                if(isCeck == true)
                     Color.Green
                 else
                     Color.Red
             }
         )
-
 
         Button(
             onClick = {
@@ -146,7 +142,7 @@ fun AnswersButtons (gameVM: GameViewModel, windowInfo: WindowInfo) {
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.background,
-                disabledContainerColor = color,
+                disabledContainerColor = if(gameVM.correctAnswers[index] == true) Color.Green else Color.Red,
                 disabledContentColor = MaterialTheme.colorScheme.primary
             )
         ) {

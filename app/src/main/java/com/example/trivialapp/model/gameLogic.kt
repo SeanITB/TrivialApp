@@ -1,8 +1,7 @@
 package com.example.trivialapp.model
 
 import androidx.navigation.NavHostController
-import com.example.trivialapp.ViewModel.GameViewModel
-import com.example.trivialapp.ViewModel.SettingsViewModel
+import com.example.trivialapp.ViewModel.*
 import com.example.trivialapp.navigation.Routes
 
 fun generateRandomQuestion(settingsVM: SettingsViewModel): Question{
@@ -38,7 +37,7 @@ fun generateRandomQuestion(settingsVM: SettingsViewModel): Question{
 }
 fun restartRound(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     gameVM.updateRandomQuestion(generateRandomQuestion(settingsVM))
-    gameVM.updateTimePass(0.0f)
+    gameVM.updateTimePass(0)
     gameVM.updateRoundCount(1)
     for (index in gameVM.enabledButtons.indices) {
         gameVM.enabledButtons[index] = true
@@ -81,6 +80,6 @@ fun restarGame(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
         gameVM.enabledButtons[index] = true
         gameVM.correctAnswers[index] = false
     }
-    gameVM.updateTimePass(0.0f)
+    gameVM.updateTimePass(0)
     gameVM.updateRandomQuestion(generateRandomQuestion(settingsVM))
 }

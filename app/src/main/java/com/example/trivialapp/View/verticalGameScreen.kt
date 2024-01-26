@@ -25,7 +25,7 @@ import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
 
 @Composable
-fun VerticalGameScreen(navigationController: NavHostController, settingVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
+fun VerticalGameScreen(navigationController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -42,10 +42,10 @@ fun VerticalGameScreen(navigationController: NavHostController, settingVM: Setti
                     end.linkTo(parent.end)
                 }
         ) {
-            TopBar(navigationController = navigationController, settingsVM = settingVM, gameVM = gameVM)
+            TopBar(navigationController = navigationController, settingsVM = settingsVM, gameVM = gameVM)
         }
         Text(
-            text = "Round ${if (gameVM.roundCount < settingVM.rounds+1) gameVM.roundCount else gameVM.roundCount-1}/${settingVM.rounds}",
+            text = "Round ${if (gameVM.roundCount < settingsVM.rounds+1) gameVM.roundCount else gameVM.roundCount-1}/${settingsVM.rounds}",
             modifier = Modifier.constrainAs(round) {
                 top.linkTo(diffText.bottom)
                 bottom.linkTo(imgQuestion.top)
@@ -92,7 +92,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingVM: Setti
             AnswersButtons(gameVM = gameVM, windowInfo = windowInfo)
         }
         LinearProgressIndicator(
-            progress = gameVM.timePassed/1f,
+            progress = (gameVM.timePassed/settingsVM.time).toFloat(),
             color = MaterialTheme.colorScheme.secondary,
             trackColor = MaterialTheme.colorScheme.onTertiary,
             modifier = Modifier

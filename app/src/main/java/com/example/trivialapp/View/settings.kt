@@ -160,7 +160,7 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
             Slider(
                 value = finishValueTime,
                 onValueChange = { finishValueTime = it },
-                onValueChangeFinished = { settingsVM.changeTime(finishValueTime)},
+                onValueChangeFinished = { settingsVM.changeTime(finishValueTime.toInt())},
                 valueRange = 0.1f..2f,
                 steps = 18,
                 modifier = Modifier.fillMaxWidth(),

@@ -89,7 +89,7 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
         }
         //Text(text = "${gameInfo.timePassed}")
         LinearProgressIndicator(
-            progress = gameVM.timePassed/1f,
+            progress = (gameVM.timePassed/settingsVM.time).toFloat(),
             color = MaterialTheme.colorScheme.secondary,
             trackColor = MaterialTheme.colorScheme.onTertiary,
             modifier = Modifier

@@ -29,7 +29,7 @@ class GameViewModel: ViewModel(){
     var textSize by mutableStateOf(20)
         private set
 
-    var timePassed by mutableStateOf(0.0f)
+    var timePassed by mutableStateOf(0)
         private set
 
     var randomQuestion by mutableStateOf(Question.values().random())
@@ -40,55 +40,46 @@ class GameViewModel: ViewModel(){
 
     var activeAnimation by mutableStateOf(false)
         private set
-    //var animationDone by mutableStateOf(false)
-        //private set
 
     var nextQuestion by mutableStateOf(false)
         private set
 
 
     fun updateUserAnswear(value: Int) {
-        userAnswear = value
+        this.userAnswear = value
     }
 
     fun updateChek(value: Boolean) {
-        check = value
+        this.check = value
     }
 
     fun updateRightAnsers(value: Int) {
-        if (value == 0) roundCount = value
-        rightAnswers += value
+        if (value == 0) this.roundCount = value
+        this.rightAnswers += value
     }
 
     fun updateRoundCount(value: Int) {
-        if (value == 0) roundCount = value
-        else roundCount += value
+        if (value == 0) this.roundCount = value
+        else this.roundCount += value
     }
 
-    fun updateTimePass(value: Float){
-        if (value == 0.0f) timePassed = value
-        else timePassed += value
+    fun updateTimePass(value: Int){
+        if (value == 0) this.timePassed = value
+        else this.timePassed += value
     }
 
     fun updateRandomQuestion(value: Question) {
-        randomQuestion = value
+        this.randomQuestion = value
     }
 
     fun updateTimeAnimation(value: Int) {
-        if (value == 0) timeAnimation = value
-        else timeAnimation += value
+        if (value == 0) this.timeAnimation = value
+        else this.timeAnimation += value
     }
 
     fun updateActiveAnimation(value: Boolean) {
         activeAnimation = value
     }
-    /*
-
-    fun updateAnimationDone(value: Boolean) {
-        animationDone = value
-    }
-
-     */
 
     fun updateNextQuestion(value: Boolean) {
         this.nextQuestion = value

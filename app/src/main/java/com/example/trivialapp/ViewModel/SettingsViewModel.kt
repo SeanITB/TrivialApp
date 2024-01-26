@@ -17,7 +17,7 @@ class SettingsViewModel : ViewModel() {
     var rounds by mutableStateOf(5)
         private set
 
-    var time by mutableStateOf(2f)
+    var time by mutableStateOf(2)
         private set
 
     var textSize by mutableStateOf(20)
@@ -35,7 +35,7 @@ class SettingsViewModel : ViewModel() {
         rounds = value
     }
 
-    fun changeTime(value: Float) {
+    fun changeTime(value: Int) {
         time = value
     }
 
