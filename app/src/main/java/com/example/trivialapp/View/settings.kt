@@ -47,6 +47,7 @@ import com.example.trivialapp.navigation.Routes
 fun SettingsScreen(navigationController: NavHostController, settingsVM: SettingsViewModel) {
     ConstraintLayout(modifier = Modifier.fillMaxSize()){
         val (difficulty, rounds,time, volume, darkMode, returnMenue) = createRefs()
+        val topGuide = createGuidelineFromTop(0.1f)
         val startGuide = createGuidelineFromStart(0.1f)
         val endGuide = createGuidelineFromEnd(0.1f)
         var expanded by remember { mutableStateOf(false) }
@@ -59,7 +60,7 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
         var finishValueTime by remember { mutableStateOf(settingsVM.time.toFloat()) }
         Column (
             modifier = Modifier.constrainAs(difficulty) {
-                top.linkTo(parent.top)
+                top.linkTo(topGuide)
                 bottom.linkTo(rounds.top)
                 start.linkTo(rounds.start)
             }
@@ -158,7 +159,7 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
             Column(
                 modifier = Modifier,
                 verticalArrangement = Arrangement.SpaceBetween,
-                //horizontalAlignment = Alignment.Horizontal()
+                horizontalAlignment = Alignment.CenterHorizontally
             ){
                 Slider(
                     value = finishValueTime,
@@ -173,6 +174,7 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
                         inactiveTrackColor = MaterialTheme.colorScheme.tertiary
                     )
                 )
+                Text(text = "${settingsVM.time}", fontSize = settingsVM.textSize.sp)
             }
         }
         Row(
@@ -196,19 +198,26 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
             Spacer(modifier = Modifier.padding(16.dp))
-            Slider(
-                value = sliderValueText,
-                onValueChange = { sliderValueText = it},
-                onValueChangeFinished = { settingsVM.changeTextSize(sliderValueText.toInt())},
-                valueRange = 15f..25f,
-                steps = 18,
-                modifier = Modifier.fillMaxWidth(),
-                colors = SliderDefaults.colors(
-                    thumbColor = MaterialTheme.colorScheme.secondary,
-                    activeTrackColor = MaterialTheme.colorScheme.secondary,
-                    inactiveTrackColor = MaterialTheme.colorScheme.tertiary
+            Column(
+                modifier = Modifier,
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Slider(
+                    value = sliderValueText,
+                    onValueChange = { sliderValueText = it},
+                    onValueChangeFinished = { settingsVM.changeTextSize(sliderValueText.toInt())},
+                    valueRange = 15f..25f,
+                    steps = 18,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = SliderDefaults.colors(
+                        thumbColor = MaterialTheme.colorScheme.secondary,
+                        activeTrackColor = MaterialTheme.colorScheme.secondary,
+                        inactiveTrackColor = MaterialTheme.colorScheme.tertiary
+                    )
                 )
-            )
+                Text(text = "${settingsVM.textSize}", fontSize = settingsVM.textSize.sp)
+            }
         }
         Row(
             modifier = Modifier

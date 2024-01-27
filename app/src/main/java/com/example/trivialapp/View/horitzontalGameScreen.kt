@@ -44,7 +44,7 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
             TopBar(navigationController = navigationController, settingsVM = settingsVM, gameVM = gameVM)
             Spacer(modifier = Modifier.width(100.dp))
             Text(
-                text = "Round ${if (gameVM.roundCount < settingsVM.rounds) gameVM.roundCount else gameVM.roundCount-1}/${settingsVM.rounds}",
+                text = "Round ${gameVM.roundCount}/${settingsVM.rounds}",
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = settingsVM.textSize.sp,
@@ -87,7 +87,6 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
         ) {
             AnswersButtons(settingsVM = settingsVM, gameVM = gameVM, windowInfo = windowInfo)
         }
-        //Text(text = "${gameInfo.timePassed}")
         LinearProgressIndicator(
             progress = (gameVM.timePassed/settingsVM.time).toFloat(),
             color = MaterialTheme.colorScheme.secondary,

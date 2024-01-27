@@ -9,20 +9,13 @@ fun generateRandomQuestion(settingsVM: SettingsViewModel): Question{
     val normalQuestions: MutableList<Question> = mutableListOf()
     val difficultQuesstions: MutableList<Question> = mutableListOf()
 
-    // Clasifica els valors segons la dificultad i si ja s'han fet
+    // Classifies the questions for if they are not played and for the difficulty.
     for (question in Question.values()) {
-        when (question.difficulty) {
-            'E' -> {
-                if (question.isDone == false)
-                    easyQuestions.add(question)
-            }
-            'N' -> {
-                if (question.isDone == false)
-                    normalQuestions.add(question)
-            }
-            else -> {
-                if (question.isDone == false)
-                    difficultQuesstions.add(question)
+        if (question.isDone == false) {
+            when (question.difficulty) {
+                'S' -> easyQuestions.add(question)
+                'G' -> normalQuestions.add(question)
+                else -> difficultQuesstions.add(question)
             }
         }
     }
@@ -46,10 +39,11 @@ fun restartRound(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     gameVM.updateNextQuestion(false)
     gameVM.updateActiveAnimation(false)
     gameVM.updateTimeAnimation(0)
+    gameVM.updateRightAnsers(0)
 }
 
 fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
-    if (gameVM.roundCount < settingsVM.rounds + 1) {
+    if (gameVM.roundCount < settingsVM.rounds) {
         if (gameVM.check == true) {
             gameVM.randomQuestion.isDone = true
             gameVM.enabledButtons[gameVM.userAnswear] = false

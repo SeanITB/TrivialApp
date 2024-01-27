@@ -48,7 +48,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
             TopBar(navigationController = navigationController, settingsVM = settingsVM, gameVM = gameVM)
         }
         Text(
-            text = "Round ${if (gameVM.roundCount < settingsVM.rounds+1) gameVM.roundCount else gameVM.roundCount-1}/${settingsVM.rounds}",
+            text = "Round ${gameVM.roundCount}/${settingsVM.rounds}",
             fontSize = settingsVM.textSize.sp,
             modifier = Modifier.constrainAs(round) {
                 top.linkTo(diffText.bottom)
