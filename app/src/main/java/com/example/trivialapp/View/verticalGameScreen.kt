@@ -20,12 +20,17 @@ import com.example.trivialapp.ViewModel.SettingsViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
+import com.example.trivialapp.model.restartRound
 
 @Composable
 fun VerticalGameScreen(navigationController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
@@ -34,7 +39,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
     ) {
         val startGuide = createGuidelineFromStart(0.1f)
         val endGuide = createGuidelineFromEnd(0.1f)
-        val (diffText, round, imgQuestion, question, answer, progres) = createRefs()
+        val (diffText, round, imgQuestion, question, answer, nextQuestion, progres) = createRefs()
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -77,11 +82,11 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
             modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .constrainAs(question) {
-                top.linkTo(imgQuestion.bottom)
-                bottom.linkTo(answer.top)
-                start.linkTo(startGuide)
-                end.linkTo(endGuide)
-            }
+                    top.linkTo(imgQuestion.bottom)
+                    bottom.linkTo(answer.top)
+                    start.linkTo(startGuide)
+                    end.linkTo(endGuide)
+                }
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -90,14 +95,31 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
                 .fillMaxWidth()
                 .constrainAs(answer) {
                     top.linkTo(question.bottom)
-                    bottom.linkTo(progres.top)
+                    bottom.linkTo(nextQuestion.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
         ) {
             AnswersButtons(settingsVM = settingsVM, gameVM = gameVM, windowInfo = windowInfo)
         }
-
+        if (gameVM.stop) {
+            Button(
+                onClick = { restartRound(settingsVM = settingsVM, gameVM = gameVM) },
+                shape = RoundedCornerShape(5.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.background,
+                ),
+                modifier = Modifier.constrainAs(nextQuestion) {
+                    top.linkTo(answer.bottom)
+                    bottom.linkTo(progres.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+            ) {
+                Text(text = "Next question")
+            }
+        }
         LinearProgressIndicator(
             progress = (gameVM.timePassed.toFloat() * settingsVM.time.toFloat())/100f/1f,
             color = MaterialTheme.colorScheme.secondary,

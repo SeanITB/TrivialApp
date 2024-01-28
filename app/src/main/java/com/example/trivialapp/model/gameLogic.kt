@@ -37,29 +37,20 @@ fun restartRound(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
         gameVM.correctAnswers[index] = false
     }
     gameVM.updateNextQuestion(false)
-    gameVM.updateActiveAnimation(false)
+    gameVM.updateStop(false)
     gameVM.updateTimeAnimation(0)
-    //gameVM.updateRightAnsers(0)
 }
 
 fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     if (gameVM.roundCount < settingsVM.rounds) {
         if (gameVM.check == true) {
             gameVM.randomQuestion.isDone = true
-            gameVM.enabledButtons[gameVM.userAnswear] = false
-            if (
-                //gameVM.animationDone == false &&
-                gameVM.randomQuestion.answers[gameVM.userAnswear].equals(gameVM.randomQuestion.raightAnswear)
-                ) {
-                //gameVM.updateActiveAnimation(true)
+            gameVM.updateChek(false)
+            gameVM.updateStop(true)
+            if (gameVM.randomQuestion.answers[gameVM.userAnswear].equals(gameVM.randomQuestion.raightAnswear)) {
                 gameVM.correctAnswers[gameVM.userAnswear] = true
                 gameVM.updateRightAnsers(1)
             }
-            //if (gameVM.animationDone == true) {
-                gameVM.updateChek(false)
-                gameVM.updateActiveAnimation(true)
-                //gameVM.updateAnimationDone(false)
-            //}
         }
     } else
         navController.navigate(Routes.ResultScreen.route)

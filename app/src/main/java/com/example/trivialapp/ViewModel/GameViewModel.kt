@@ -26,9 +26,6 @@ class GameViewModel: ViewModel(){
     var correctAnswers by mutableStateOf(arrayOf(false, false, false, false))
         private set
 
-    var textSize by mutableStateOf(20)
-        private set
-
     var timePassed by mutableStateOf(0)
         private set
 
@@ -38,7 +35,7 @@ class GameViewModel: ViewModel(){
     var timeAnimation by mutableStateOf(0)
         private set
 
-    var activeAnimation by mutableStateOf(false)
+    var stop by mutableStateOf(false)
         private set
 
     var nextQuestion by mutableStateOf(false)
@@ -78,9 +75,11 @@ class GameViewModel: ViewModel(){
         else this.timeAnimation += value
     }
 
-    fun updateActiveAnimation(value: Boolean) {
-        activeAnimation = value
+
+    fun updateStop(value: Boolean) {
+        stop = value
     }
+
 
     fun updateNextQuestion(value: Boolean) {
         this.nextQuestion = value

@@ -45,12 +45,12 @@ import com.example.trivialapp.model.restartRound
 fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     val windowInfo = remeberWindowInfo()
 
-    if (gameVM.timePassed >= settingsVM.time || gameVM.nextQuestion) {
+    if (gameVM.timePassed >= settingsVM.time) {
         restartRound(settingsVM = settingsVM, gameVM = gameVM)
     }
 
     LaunchedEffect(key1 = gameVM.timePassed) {
-        if (gameVM.timePassed < settingsVM.time) {
+        if (gameVM.timePassed < settingsVM.time && !gameVM.stop) {
             delay(1000L)
             gameVM.updateTimePass(1)
         }
@@ -63,10 +63,11 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
     
     checkAnswer(navController = navController, settingsVM = settingsVM, gameVM = gameVM)
 
-    if (gameVM.activeAnimation == true)
-        Animation(gameVM = gameVM)
+    //if (gameVM.activeAnimation == true)
+      //  Animation(gameVM = gameVM)
 }
 
+/*
 @Composable
 fun Animation(gameVM: GameViewModel){
     val context = LocalContext.current
@@ -80,6 +81,8 @@ fun Animation(gameVM: GameViewModel){
         }
     }
 }
+
+ */
 
 @Composable
 fun TopBar(navigationController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
@@ -108,7 +111,6 @@ fun TopBar(navigationController: NavHostController, settingsVM: SettingsViewMode
 @Composable
 fun AnswersButtons (settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
     gameVM.randomQuestion.answers.indices.forEach { index ->
-
         /*
         val isCeck by remember {
             mutableStateOf(gameVM.check)
@@ -129,7 +131,6 @@ fun AnswersButtons (settingsVM: SettingsViewModel, gameVM: GameViewModel, window
         )
 
          */
-
         Button(
             onClick = {
                 gameVM.updateChek(true)
@@ -140,9 +141,9 @@ fun AnswersButtons (settingsVM: SettingsViewModel, gameVM: GameViewModel, window
             modifier = Modifier.width(350.dp),
             enabled = gameVM.enabledButtons[index],
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,
+                containerColor = if (gameVM.stop && gameVM.randomQuestion.answers[index].equals(gameVM.randomQuestion.raightAnswear)) Color.Green else MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.background,
-                disabledContainerColor = if(gameVM.correctAnswers[index] == true) Color.Green else Color.Red,
+                disabledContainerColor = if(gameVM.correctAnswers[index]) Color.Green else Color.Red,
                 disabledContentColor = MaterialTheme.colorScheme.primary
             )
         ) {
