@@ -23,11 +23,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
 import com.example.trivialapp.model.restartRound
@@ -79,11 +76,12 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold,
             fontSize = settingsVM.textSize.sp,
+            textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .constrainAs(question) {
                     top.linkTo(imgQuestion.bottom)
-                    bottom.linkTo(answer.top)
+                    bottom.linkTo(answer.top, margin = 20.dp)
                     start.linkTo(startGuide)
                     end.linkTo(endGuide)
                 }
@@ -95,7 +93,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
                 .fillMaxWidth()
                 .constrainAs(answer) {
                     top.linkTo(question.bottom)
-                    bottom.linkTo(nextQuestion.top)
+                    bottom.linkTo(progres.top, margin = 70.dp)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }

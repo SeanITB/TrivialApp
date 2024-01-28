@@ -1,5 +1,6 @@
 package com.example.trivialapp.View
 
+import HoritzontalGameScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -30,78 +31,12 @@ import com.example.trivialapp.model.restarGame
 import com.example.trivialapp.navigation.Routes
 
 @Composable
-fun MenuScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel){
-    Column (modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-        ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
-        ){
-            val (icon, play, settings) = createRefs()
-            val topGuide = createGuidelineFromTop(0.2f)
+fun MenuScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo){
 
-            Image(painter = painterResource(
-                id = if (!settingsVM.darkThem)
-                    R.drawable.trivial_icon4_l
-                else
-                    R.drawable.trivial_icon4_n
-            ),
-                contentDescription = "logo",
-                modifier = Modifier
-                    .size(200.dp)
-                    .constrainAs(icon) {
-                        top.linkTo(topGuide)
-                        bottom.linkTo(play.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-            )
+    if (windowInfo.sreenWidthInfo is WindowInfo.WindowType.Compact)
+        VerticalMenueScreen(navController, settingsVM, gameVM, windowInfo)
+    else
+        HoritzontalMenueScreen(navController, settingsVM, gameVM, windowInfo)
 
 
-            /*
-            Icon(
-                imageVector = Icons.Default.,
-                contentDescription = "Turn back icon.",
-                tint = MaterialTheme.colorScheme.background,
-                modifier = Modifier
-                        .size(200.dp)
-                        .constrainAs(icon) {
-                        top.linkTo(topGuide)
-                        bottom.linkTo(play.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-            )
-
-             */
-            Button(
-                    onClick = {
-                        restarGame(settingsVM,gameVM)
-                        navController.navigate(Routes.GameScreen.route)
-                              },
-                shape = RoundedCornerShape(5.dp),
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
-                modifier = Modifier
-                    .width(200.dp)
-                    .constrainAs(play) {
-                        top.linkTo(icon.bottom, margin = 35.dp)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-            ) {
-                Text(text = "New Game", fontSize = settingsVM.textSize.sp)
-            }
-            Button(
-                onClick = { navController.navigate(Routes.SettingsScreen.route) },
-                shape = RoundedCornerShape(5.dp),
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
-                modifier = Modifier
-                    .width(200.dp)
-                    .constrainAs(settings) {
-                        top.linkTo(play.bottom, margin = 5.dp)
-                        start.linkTo(play.start)
-                    }
-            ) {
-                Text(text = "Settings", fontSize = settingsVM.textSize.sp)
-            }
-        }
-    }
 }

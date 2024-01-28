@@ -4,8 +4,6 @@ sealed class Routes(val route: String) {
     object LunchScreen: Routes("lunchScreen")
     object MenuScreen: Routes("menuScreen")
     object GameScreen: Routes("gameSreen")
-    object VerticalGameScreen: Routes("verticalGameScreen")
-    object HoritzontalGameScreen: Routes("horitzontalGameScreen")
     object ResultScreen: Routes("resultScreen")
     object SettingsScreen: Routes("settingSreen?")
 }

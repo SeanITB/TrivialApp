@@ -42,8 +42,7 @@ import com.example.trivialapp.model.restarGame
 import com.example.trivialapp.model.restartRound
 
 @Composable
-fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
-    val windowInfo = remeberWindowInfo()
+fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
 
     if (gameVM.timePassed >= settingsVM.time) {
         restartRound(settingsVM = settingsVM, gameVM = gameVM)
@@ -62,27 +61,8 @@ fun GameScreen(navController: NavHostController, settingsVM: SettingsViewModel, 
         HoritzontalGameScreen(navController, settingsVM, gameVM, windowInfo)
     
     checkAnswer(navController = navController, settingsVM = settingsVM, gameVM = gameVM)
-
-    //if (gameVM.activeAnimation == true)
-      //  Animation(gameVM = gameVM)
 }
 
-/*
-@Composable
-fun Animation(gameVM: GameViewModel){
-    val context = LocalContext.current
-    LaunchedEffect(key1 = gameVM.timeAnimation) {
-        if (gameVM.timeAnimation < 1) {
-            delay(2000L)
-            Toast.makeText(context, "Funciona", Toast.LENGTH_LONG).show()
-            gameVM.updateTimeAnimation(1)
-        } else {
-            gameVM.updateNextQuestion(true)
-        }
-    }
-}
-
- */
 
 @Composable
 fun TopBar(navigationController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {

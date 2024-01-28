@@ -23,24 +23,38 @@ class SettingsViewModel : ViewModel() {
     var textSize by mutableStateOf(20)
         private set
 
+    var expanded by mutableStateOf(false)
+        private set
+
+    var selectedOption by mutableStateOf(5)
+        private set
+
     fun changeDarkThem(value: Boolean) {
-        darkThem = value
+        this.darkThem = value
     }
 
     fun changeDifficulty(value: String) {
-        difficulty = value
+        this.difficulty = value
     }
 
     fun changeRouunds(value: Int) {
-        rounds = value
+        this.rounds = value
     }
 
     fun changeTime(value: Int) {
-        time = value
+        this.time = value
     }
 
     fun changeTextSize(valeu: Int) {
-        textSize = valeu
+        this.textSize = valeu
+    }
+
+    fun changeExpanded (value: Boolean) {
+        this.expanded = value
+    }
+
+    fun changeSelectedOption (valeu: Int) {
+        this.selectedOption = valeu
     }
 
 }
