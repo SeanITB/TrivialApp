@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -51,7 +50,7 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
         val startGuide = createGuidelineFromStart(0.1f)
         val endGuide = createGuidelineFromEnd(0.1f)
         var expanded by remember { mutableStateOf(false) }
-        val difficulties = arrayOf("EASY", "NORMAL", "DIFFICULT")
+        val difficulties = arrayOf("SPORTS", "GENERAL KNOWLEDGE", "HISTORY")
         val arrRounds = arrayOf(5, 10 ,15)
         var selectedOption by remember {
             mutableStateOf(arrRounds[0])
@@ -66,16 +65,20 @@ fun SettingsScreen(navigationController: NavHostController, settingsVM: Settings
             }
         ) {
             Row {
-                Text(text = "Difficulty", fontWeight = FontWeight.Bold, fontSize = settingsVM.textSize.sp)
+                Text(text = """
+                    PLAY 
+                    MODE
+                """.trimIndent(), fontWeight = FontWeight.Bold, fontSize = settingsVM.textSize.sp)
                 Spacer(modifier = Modifier.padding(16.dp))
                 Box(
                     //contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxWidth(0.72f)
+                    modifier = Modifier.fillMaxWidth(0.95f)
                 ) {
                     OutlinedTextField(
                         value = settingsVM.difficulty,
                         onValueChange = { settingsVM.changeDifficulty(settingsVM.difficulty) },
-                        label = { Text("DIFFICULTY") },
+                        label = { Text("PLAY MODE") },
+                        //colors = MaterialTheme.colorScheme.primary, toDo: poner color de contraste
                         enabled = false,
                         readOnly = true,
                         colors = TextFieldDefaults.outlinedTextFieldColors(

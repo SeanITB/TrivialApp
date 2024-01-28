@@ -26,7 +26,7 @@ fun ResultScreen(navController: NavHostController, settingVM: SettingsViewModel,
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ){
-        val (initialMsg, secundaryMsg, butPA, butRG) = createRefs()
+        val (initialMsg, secundaryMsg, butPA, butRG, share) = createRefs()
         val topGuide = createGuidelineFromTop(0.1f)
         val bottomGuide = createGuidelineFromBottom(0.2f)
         Text(
@@ -87,6 +87,19 @@ fun ResultScreen(navController: NavHostController, settingVM: SettingsViewModel,
                 }
         ) {
             Text(text = "Return to menu", fontSize = settingVM.textSize.sp)
+        }
+        Button(
+            onClick = { /*toDo*/ },
+            shape = RoundedCornerShape(5.dp),
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
+            modifier = Modifier
+                .width(200.dp)
+                .constrainAs(share) {
+                    top.linkTo(butRG.bottom, margin = 15.dp)
+                    start.linkTo(butPA.start)
+                }
+        ) {
+            Text(text = "Share", fontSize = settingVM.textSize.sp)
         }
     }
 }

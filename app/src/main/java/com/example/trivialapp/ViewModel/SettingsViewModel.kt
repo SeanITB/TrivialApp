@@ -11,7 +11,7 @@ class SettingsViewModel : ViewModel() {
     var darkThem by mutableStateOf(false)
         private set
 
-    var difficulty by mutableStateOf("EASY")
+    var difficulty by mutableStateOf("SPORTS")
         private set
 
     var rounds by mutableStateOf(5)

@@ -54,12 +54,12 @@ class GameViewModel: ViewModel(){
     }
 
     fun updateRightAnsers(value: Int) {
-        if (value == 0) this.roundCount = value
+        if (value == 0) this.rightAnswers = value
         this.rightAnswers += value
     }
 
     fun updateRoundCount(value: Int) {
-        if (value == 0) this.roundCount = value
+        if (value == 0) this.roundCount = 1
         else this.roundCount += value
     }
 

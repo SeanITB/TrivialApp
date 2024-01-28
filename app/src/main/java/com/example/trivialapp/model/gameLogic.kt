@@ -22,8 +22,8 @@ fun generateRandomQuestion(settingsVM: SettingsViewModel): Question{
 
     // Es guarda la pregunta
     val selectedQuestion = when (settingsVM.difficulty) {
-        "EASY" -> easyQuestions.random()
-        "NORMAL" -> normalQuestions.random()
+        "SPORTS" -> easyQuestions.random()
+        "GENERAL KNOWLEDGE" -> normalQuestions.random()
         else -> difficultQuesstions.random()
     }
     return selectedQuestion
@@ -39,7 +39,7 @@ fun restartRound(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     gameVM.updateNextQuestion(false)
     gameVM.updateActiveAnimation(false)
     gameVM.updateTimeAnimation(0)
-    gameVM.updateRightAnsers(0)
+    //gameVM.updateRightAnsers(0)
 }
 
 fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {

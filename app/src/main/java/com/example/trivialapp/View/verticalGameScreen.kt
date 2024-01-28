@@ -61,7 +61,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
             painter = painterResource(id = gameVM.randomQuestion.img),
             contentDescription = "Image question",
             modifier = Modifier
-                .size(200.dp)
+                .size(300.dp)
                 .constrainAs(imgQuestion) {
                     top.linkTo(round.bottom)
                     bottom.linkTo(question.top)
@@ -74,8 +74,10 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold,
             fontSize = settingsVM.textSize.sp,
-            modifier = Modifier.constrainAs(question) {
-                top.linkTo(question.bottom)
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .constrainAs(question) {
+                top.linkTo(imgQuestion.bottom)
                 bottom.linkTo(answer.top)
                 start.linkTo(startGuide)
                 end.linkTo(endGuide)

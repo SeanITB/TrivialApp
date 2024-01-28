@@ -24,13 +24,18 @@ import com.example.trivialapp.navigation.Routes
 import kotlinx.coroutines.delay
 
 @Composable
-fun  Splash(alphaAnim: Float){
+fun  Splash(alphaAnim: Float, settingsVM: SettingsViewModel){
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
+            painter = painterResource(
+                id = if (!settingsVM.darkThem)
+                    R.drawable.trivial_icon4_l
+                else
+                    R.drawable.trivial_icon4_n
+            ),
             contentDescription = "logo",
             alpha = alphaAnim,
             modifier = Modifier.size(200.dp)
@@ -40,7 +45,7 @@ fun  Splash(alphaAnim: Float){
 }
 
 @Composable
-fun LunchScreen(navigationController: NavController, viewModel: SettingsViewModel) {
+fun LunchScreen(navigationController: NavController, settingsVM: SettingsViewModel) {
     var startAnimation by remember { mutableStateOf(false) }
     val alphaAnim = animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
@@ -52,5 +57,5 @@ fun LunchScreen(navigationController: NavController, viewModel: SettingsViewMode
         navigationController.popBackStack()
         navigationController.navigate(Routes.MenuScreen.route)
     }
-    Splash(alphaAnim.value)
+    Splash(alphaAnim.value, settingsVM)
 }
