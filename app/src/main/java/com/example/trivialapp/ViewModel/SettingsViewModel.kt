@@ -26,8 +26,6 @@ class SettingsViewModel : ViewModel() {
     var expanded by mutableStateOf(false)
         private set
 
-    var selectedOption by mutableStateOf(5)
-        private set
 
     fun changeDarkThem(value: Boolean) {
         this.darkThem = value
@@ -53,8 +51,5 @@ class SettingsViewModel : ViewModel() {
         this.expanded = value
     }
 
-    fun changeSelectedOption (valeu: Int) {
-        this.selectedOption = valeu
-    }
 
 }

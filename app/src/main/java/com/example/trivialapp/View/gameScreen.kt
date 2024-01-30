@@ -1,10 +1,10 @@
 package com.example.trivialapp.View
 
-import HoritzontalGameScreen
-import android.widget.Toast
-import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
+import com.example.trivialapp.View.horitzontal.HoritzontalGameScreen
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,25 +19,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.trivialapp.View.vertical.VerticalGameScreen
 import com.example.trivialapp.ViewModel.SettingsViewModel
 import com.example.trivialapp.navigation.Routes
 import kotlinx.coroutines.delay
 import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
 import com.example.trivialapp.model.checkAnswer
-import com.example.trivialapp.model.remeberWindowInfo
 import com.example.trivialapp.model.restarGame
 import com.example.trivialapp.model.restartRound
 
@@ -91,26 +87,18 @@ fun TopBar(navigationController: NavHostController, settingsVM: SettingsViewMode
 @Composable
 fun AnswersButtons (settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
     gameVM.randomQuestion.answers.indices.forEach { index ->
-        /*
-        val isCeck by remember {
-            mutableStateOf(gameVM.check)
-        }
-        val transition = updateTransition(
-            targetState = isCeck,
-            label = null
-        )
-        val color by transition.animateColor(
-            //transitionSpec = { tween(2000) },
-            label = "Color button",
-            targetValueByState = {isCeck ->
-                if(isCeck == true)
-                    Color.Green
-                else
-                    Color.Red
-            }
-        )
-
-         */
+        val animatedColorRight =
+            animateColorAsState(
+                MaterialTheme.colorScheme.onTertiary,
+                animationSpec = tween(1000, easing = LinearEasing),
+                label = "Color animation"
+            )
+        val animatedColorWrong =
+            animateColorAsState(
+                if(!gameVM.correctAnswers[index]) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.secondary,
+                animationSpec = tween(1000, easing = LinearEasing),
+                label = "Color animation"
+            )
         Button(
             onClick = {
                 gameVM.updateChek(true)
@@ -121,9 +109,9 @@ fun AnswersButtons (settingsVM: SettingsViewModel, gameVM: GameViewModel, window
             modifier = Modifier.width(350.dp),
             enabled = gameVM.enabledButtons[index],
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (gameVM.stop && gameVM.randomQuestion.answers[index].equals(gameVM.randomQuestion.raightAnswear)) Color.Green else MaterialTheme.colorScheme.secondary,
+                containerColor = if (gameVM.stop && gameVM.randomQuestion.answers[index].equals(gameVM.randomQuestion.raightAnswer)) animatedColorRight.value else MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.background,
-                disabledContainerColor = if(gameVM.correctAnswers[index]) Color.Green else Color.Red,
+                disabledContainerColor = if(gameVM.correctAnswers[index]) animatedColorRight.value else animatedColorWrong.value,
                 disabledContentColor = MaterialTheme.colorScheme.primary
             )
         ) {

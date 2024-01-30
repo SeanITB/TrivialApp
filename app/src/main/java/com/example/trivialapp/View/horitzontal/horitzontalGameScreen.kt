@@ -1,4 +1,4 @@
-
+package com.example.trivialapp.View.horitzontal
 import android.widget.Button
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,9 +20,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -38,39 +40,17 @@ import com.example.trivialapp.navigation.Routes
 
 @Composable
 fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
+    val materialColor = MaterialTheme.colorScheme
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
-        val (turnBack, imgQuestions, question, answer, progres, nextQuestion) = createRefs()
-        /*
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.secondary)
-                .constrainAs(topBar) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-        ) {
-            //TopBar(navigationController = navigationController, settingsVM = settingsVM, gameVM = gameVM)
-            Spacer(modifier = Modifier.width(100.dp))
-            Text(
-                text = "Round ${gameVM.roundCount}/${settingsVM.rounds}",
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = settingsVM.textSize.sp,
-                modifier = Modifier.padding(10.dp)
-            )
-        }
-
-         */
+        val (turnBack, round, imgQuestions, question, answer, progres, nextQuestion) = createRefs()
         Button(
             onClick = {
                 navigationController.navigate(Routes.MenuScreen.route)
                 restarGame(settingsVM = settingsVM, gameVM = gameVM)
             },
-            colors = ButtonDefaults.outlinedButtonColors(MaterialTheme.colorScheme.secondary),
+            colors = ButtonDefaults.outlinedButtonColors(materialColor.secondary),
             modifier = Modifier.constrainAs(turnBack) {
                 start.linkTo(parent.start, margin = 20.dp)
                 top.linkTo(parent.top, margin = 20.dp)
@@ -79,27 +59,48 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Turn back icon.",
-                tint = MaterialTheme.colorScheme.background
+                tint = materialColor.background
             )
         }
         Text(
             text = gameVM.randomQuestion.question,
-            color = MaterialTheme.colorScheme.primary,
+            color = materialColor.primary,
             fontWeight = FontWeight.Bold,
             fontSize = settingsVM.textSize.sp,
+            textAlign = TextAlign.Center,
             maxLines = 2,
-            modifier = Modifier.constrainAs(question) {
-                top.linkTo(parent.top)
+            modifier = Modifier
+                .width(500.dp)
+                .constrainAs(question) {
+                top.linkTo(parent.top, margin = 10.dp)
                 bottom.linkTo(imgQuestions.top)
                 start.linkTo(turnBack.start)
-                end.linkTo(parent.end)
+                end.linkTo(round.end)
             }
+        )
+        Text(
+            text = "Round ${gameVM.roundCount}/${settingsVM.rounds}",
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = settingsVM.textSize.sp,
+            modifier = Modifier
+                .padding(10.dp)
+                .drawBehind {
+                    drawCircle(
+                        color = materialColor.secondary,
+                        radius = this.size.height
+                    )
+                }
+                .constrainAs(round) {
+                    top.linkTo(question.top)
+                    start.linkTo(question.end)
+                }
         )
         Image(
             painter = painterResource(id = gameVM.randomQuestion.img),
             contentDescription = "Image question",
             modifier = Modifier
-                .size(200.dp)
+                .size(225.dp)
                 .constrainAs(imgQuestions) {
                     top.linkTo(question.bottom)
                     bottom.linkTo(progres.top)
@@ -120,9 +121,9 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
             AnswersButtons(settingsVM = settingsVM, gameVM = gameVM, windowInfo = windowInfo)
         }
         LinearProgressIndicator(
-            progress = (gameVM.timePassed.toFloat() * settingsVM.time.toFloat())/100f/1f,
-            color = MaterialTheme.colorScheme.secondary,
-            trackColor = MaterialTheme.colorScheme.onTertiary,
+            progress = gameVM.timePassed.toFloat() / settingsVM.time.toFloat(),
+            color = materialColor.secondary,
+            trackColor = materialColor.onSurface,
             modifier = Modifier
                 .width(370.dp)
                 .constrainAs(progres) {
@@ -137,12 +138,12 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
                 onClick = { restartRound(settingsVM = settingsVM, gameVM = gameVM) },
                 shape = RoundedCornerShape(5.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    contentColor = MaterialTheme.colorScheme.background,
+                    containerColor = materialColor.secondary,
+                    contentColor = materialColor.background,
                 ),
                 modifier = Modifier.constrainAs(nextQuestion) {
                     top.linkTo(imgQuestions.bottom)
-                    bottom.linkTo(parent.bottom)
+                    bottom.linkTo(parent.bottom, margin = 8.dp)
                     start.linkTo(parent.start)
                     end.linkTo(progres.start)
                 }

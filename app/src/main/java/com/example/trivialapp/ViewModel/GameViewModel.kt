@@ -41,6 +41,9 @@ class GameViewModel: ViewModel(){
     var nextQuestion by mutableStateOf(false)
         private set
 
+    var totalTime by mutableStateOf(0)
+        private set
+
 
     fun updateUserAnswear(value: Int) {
         this.userAnswear = value
@@ -83,5 +86,10 @@ class GameViewModel: ViewModel(){
 
     fun updateNextQuestion(value: Boolean) {
         this.nextQuestion = value
+    }
+
+    fun updateTotalTime(value: Int){
+        if (value == 0) this.totalTime = value
+        else this.totalTime += value
     }
 }

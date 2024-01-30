@@ -1,6 +1,8 @@
-package com.example.trivialapp.View
+package com.example.trivialapp.View.vertical
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -9,11 +11,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
+import com.example.trivialapp.R
 import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.ViewModel.SettingsViewModel
 import com.example.trivialapp.model.WindowInfo
@@ -21,36 +25,53 @@ import com.example.trivialapp.model.restarGame
 import com.example.trivialapp.navigation.Routes
 
 @Composable
-fun VerticalResultScreen(navController: NavHostController, settingVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo){
+fun VerticalResultScreen(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo){
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ){
-        val (initialMsg, secundaryMsg, butPA, butRG, share) = createRefs()
-        val topGuide = createGuidelineFromTop(0.1f)
+        val (initialMsg, icon, secundaryMsg, butPA, butRG, share) = createRefs()
+        //val topGuide = createGuidelineFromTop(0.1f)
         val bottomGuide = createGuidelineFromBottom(0.2f)
         Text(
             text = "Result of the game",
             fontWeight = FontWeight.Bold,
-            fontSize = settingVM.textSize.sp,
+            fontSize = (settingsVM.textSize+10).sp,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.constrainAs(initialMsg) {
-                top.linkTo(topGuide)
+                top.linkTo(parent.top)
+                bottom.linkTo(icon.top)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             }
         )
+        Image(painter = painterResource(
+            id = if (!settingsVM.darkThem)
+                R.drawable.trivial_icon4_l
+            else
+                R.drawable.trivial_icon4_n
+        ),
+            contentDescription = "logo",
+            modifier = Modifier
+                .size(200.dp)
+                .constrainAs(icon) {
+                    top.linkTo(initialMsg.bottom)
+                    bottom.linkTo(secundaryMsg.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+        )
         Text(
             text = """
-                Difficulty mode: ${settingVM.difficulty}
-                Right answears: ${gameVM.rightAnswers}
-                Number of round: ${settingVM.rounds}
-                Time for round: ${settingVM.time} seconds
+                Difficulty mode: ${settingsVM.difficulty}
+                Right answers: ${gameVM.rightAnswers}
+                Number of round: ${settingsVM.rounds}
+                Total time: ${gameVM.totalTime} seconds
             """.trimIndent(),
             fontWeight = FontWeight.Bold,
-            fontSize = settingVM.textSize.sp,
+            fontSize = settingsVM.textSize.sp,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.constrainAs(secundaryMsg) {
-                top.linkTo(initialMsg.bottom)
+                top.linkTo(icon.bottom)
                 bottom.linkTo(butPA.top)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
@@ -58,7 +79,7 @@ fun VerticalResultScreen(navController: NavHostController, settingVM: SettingsVi
         )
         Button(
             onClick = {
-                restarGame(settingVM, gameVM)
+                restarGame(settingsVM, gameVM)
                 navController.navigate(Routes.GameScreen.route)
             },
             shape = RoundedCornerShape(5.dp),
@@ -66,13 +87,13 @@ fun VerticalResultScreen(navController: NavHostController, settingVM: SettingsVi
             modifier = Modifier
                 .width(200.dp)
                 .constrainAs(butPA) {
-                    top.linkTo(secundaryMsg.top)
+                    top.linkTo(secundaryMsg.bottom)
                     bottom.linkTo(bottomGuide)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
         ) {
-            Text(text = "Play Again", fontSize = settingVM.textSize.sp)
+            Text(text = "Play Again", fontSize = settingsVM.textSize.sp)
         }
         Button(
             onClick = { navController.navigate(Routes.MenuScreen.route) },
@@ -82,10 +103,11 @@ fun VerticalResultScreen(navController: NavHostController, settingVM: SettingsVi
                 .width(200.dp)
                 .constrainAs(butRG) {
                     top.linkTo(butPA.bottom, margin = 15.dp)
+                    //bottom.linkTo(share.top)
                     start.linkTo(butPA.start)
                 }
         ) {
-            Text(text = "Return to menu", fontSize = settingVM.textSize.sp)
+            Text(text = "Return to menu", fontSize = settingsVM.textSize.sp)
         }
         Button(
             onClick = { /*toDo*/ },
@@ -95,10 +117,11 @@ fun VerticalResultScreen(navController: NavHostController, settingVM: SettingsVi
                 .width(200.dp)
                 .constrainAs(share) {
                     top.linkTo(butRG.bottom, margin = 15.dp)
+                    //bottom.linkTo(parent.bottom)
                     start.linkTo(butPA.start)
                 }
         ) {
-            Text(text = "Share", fontSize = settingVM.textSize.sp)
+            Text(text = "Share", fontSize = settingsVM.textSize.sp)
         }
     }
 }

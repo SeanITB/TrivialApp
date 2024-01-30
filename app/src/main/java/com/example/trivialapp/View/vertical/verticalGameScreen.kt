@@ -1,4 +1,4 @@
-package com.example.trivialapp.View
+package com.example.trivialapp.View.vertical
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +25,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import com.example.trivialapp.View.AnswersButtons
+import com.example.trivialapp.View.TopBar
 import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.model.WindowInfo
 import com.example.trivialapp.model.restartRound
@@ -119,9 +121,9 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
             }
         }
         LinearProgressIndicator(
-            progress = (gameVM.timePassed.toFloat() * settingsVM.time.toFloat())/100f/1f,
+            progress = (gameVM.timePassed.toFloat() / settingsVM.time.toFloat()),
             color = MaterialTheme.colorScheme.secondary,
-            trackColor = MaterialTheme.colorScheme.onTertiary,
+            trackColor = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .width(370.dp)
                 .constrainAs(progres) {

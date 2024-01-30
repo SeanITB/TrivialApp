@@ -1,4 +1,4 @@
-package com.example.trivialapp.View
+package com.example.trivialapp.View.horitzontal
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.trivialapp.ViewModel.GameViewModel
 import com.example.trivialapp.ViewModel.SettingsViewModel
-import com.example.trivialapp.model.WindowInfo
 import com.example.trivialapp.model.restarGame
 import com.example.trivialapp.navigation.Routes
 
@@ -45,7 +44,7 @@ fun HoritzontalResultSreen(navController: NavHostController, settingVM: Settings
             Text(
                 text = """
                 Difficulty mode: ${settingVM.difficulty}
-                Right answears: ${gameVM.rightAnswers}
+                Right answers: ${gameVM.rightAnswers}
                 Number of round: ${settingVM.rounds}
                 Time for round: ${settingVM.time} seconds
             """.trimIndent(),

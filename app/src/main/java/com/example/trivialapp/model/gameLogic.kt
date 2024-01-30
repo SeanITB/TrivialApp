@@ -42,12 +42,13 @@ fun restartRound(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
 }
 
 fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
-    if (gameVM.roundCount < settingsVM.rounds) {
+    if (gameVM.roundCount < settingsVM.rounds + 1) {
         if (gameVM.check == true) {
             gameVM.randomQuestion.isDone = true
             gameVM.updateChek(false)
             gameVM.updateStop(true)
-            if (gameVM.randomQuestion.answers[gameVM.userAnswear].equals(gameVM.randomQuestion.raightAnswear)) {
+            gameVM.updateTotalTime(gameVM.timePassed)
+            if (gameVM.randomQuestion.answers[gameVM.userAnswear].equals(gameVM.randomQuestion.raightAnswer)) {
                 gameVM.correctAnswers[gameVM.userAnswear] = true
                 gameVM.updateRightAnsers(1)
             }

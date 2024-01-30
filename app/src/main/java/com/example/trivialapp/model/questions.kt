@@ -12,7 +12,7 @@ enum class Question(
     val img: Int,
     val question: String,
     val answers: Array<String>,
-    val raightAnswear: String
+    val raightAnswer: String
 ) {
     palaMalasHierbas(
         'S',
