@@ -1,21 +1,27 @@
 package com.example.trivialapp.View.vertical
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.trivialapp.R
 import com.example.trivialapp.ViewModel.GameViewModel
@@ -30,8 +36,13 @@ fun VerticalResultScreen(navController: NavHostController, settingsVM: SettingsV
         modifier = Modifier.fillMaxSize()
     ){
         val (initialMsg, icon, secundaryMsg, butPA, butRG, share) = createRefs()
-        //val topGuide = createGuidelineFromTop(0.1f)
         val bottomGuide = createGuidelineFromBottom(0.2f)
+        val context = LocalContext.current
+        val sentIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "msg/palin"
+            putExtra(Intent.EXTRA_TEXT, "My game result")
+        }
+        val shareIntent = Intent.createChooser(sentIntent, "Share with...")
         Text(
             text = "Result of the game",
             fontWeight = FontWeight.Bold,
@@ -110,7 +121,9 @@ fun VerticalResultScreen(navController: NavHostController, settingsVM: SettingsV
             Text(text = "Return to menu", fontSize = settingsVM.textSize.sp)
         }
         Button(
-            onClick = { /*toDo*/ },
+            onClick = {
+                ContextCompat.startActivity(context, shareIntent, null)
+            },
             shape = RoundedCornerShape(5.dp),
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier
@@ -121,7 +134,8 @@ fun VerticalResultScreen(navController: NavHostController, settingsVM: SettingsV
                     start.linkTo(butPA.start)
                 }
         ) {
-            Text(text = "Share", fontSize = settingsVM.textSize.sp)
+            Icon(imageVector = Icons.Default.Share, contentDescription = "Share")
+            Text(text = "Shere", fontSize = settingsVM.textSize.sp)
         }
     }
 }

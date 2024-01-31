@@ -1,6 +1,15 @@
 package com.example.trivialapp.View
 
+import android.content.Intent
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
 import com.example.trivialapp.View.horitzontal.HoritzontalResultSreen
 import com.example.trivialapp.View.vertical.VerticalResultScreen
@@ -15,3 +24,4 @@ fun ResultScreen(navController: NavHostController, settingsVM: SettingsViewModel
     else
         HoritzontalResultSreen(navController, settingsVM, gameVM)
 }
+

@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
                     val windowInfo = remeberWindowInfo()
                     NavHost(
                         navController = navigationController,
-                        startDestination = Routes.GameScreen.route,
+                        startDestination = Routes.ResultScreen.route,
                         enterTransition = {
                             fadeIn(animationSpec = tween(time)) + slideIntoContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Left, tween(time)
