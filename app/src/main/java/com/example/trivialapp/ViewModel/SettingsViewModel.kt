@@ -1,13 +1,9 @@
 package com.example.trivialapp.ViewModel
 
-import android.content.Context.AUDIO_SERVICE
-import android.media.AudioManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.compose.ui.platform.LocalContext
-
 
 class SettingsViewModel : ViewModel() {
     var darkThem by mutableStateOf(false)
@@ -27,10 +23,6 @@ class SettingsViewModel : ViewModel() {
 
     var expanded by mutableStateOf(false)
         private set
-
-    //val context = LocalContext.current
-    //val audioManager = context.getSystemService(AUDIO_SERVICE) as AudioManager
-
 
     fun changeDarkThem(value: Boolean) {
         this.darkThem = value
