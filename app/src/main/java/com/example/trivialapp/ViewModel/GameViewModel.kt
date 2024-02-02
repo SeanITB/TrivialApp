@@ -45,6 +45,7 @@ class GameViewModel: ViewModel(){
         private set
 
 
+
     fun updateUserAnswear(value: Int) {
         this.userAnswear = value
     }

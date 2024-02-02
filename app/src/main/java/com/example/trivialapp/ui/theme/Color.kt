@@ -17,7 +17,7 @@ val gray = Color(0xFFB8B8B8)
 // Colors foscos
 val darkSecundariColor = Color(0xFFA05162)
 val darkWrongAswer = Color(0xFF910432)
-val darkCorrectAswer = Color(0xFF9C27B0)
+val darkCorrectAswer = Color(0xFF6033FF)
 
 // Colors clars
 val lightSecundariColor = Color(0xFF018786)

@@ -41,6 +41,20 @@ fun restartRound(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     gameVM.updateTimeAnimation(0)
 }
 
+fun restarGame(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
+    gameVM.updateRandomQuestion(generateRandomQuestion(settingsVM))
+    gameVM.updateTimePass(0)
+    gameVM.updateRoundCount(0)
+    for (index in gameVM.enabledButtons.indices){
+        gameVM.enabledButtons[index] = true
+        gameVM.correctAnswers[index] = false
+    }
+    gameVM.updateStop(false)
+    gameVM.updateUserAnswear(0)
+    gameVM.updateChek(false)
+    gameVM.updateRightAnsers(0)
+}
+
 fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel) {
     if (gameVM.roundCount < settingsVM.rounds + 1) {
         if (gameVM.check == true) {
@@ -57,15 +71,3 @@ fun checkAnswer(navController: NavHostController, settingsVM: SettingsViewModel,
         navController.navigate(Routes.ResultScreen.route)
 }
 
-fun restarGame(settingsVM: SettingsViewModel, gameVM: GameViewModel) {
-    gameVM.updateUserAnswear(0)
-    gameVM.updateChek(false)
-    gameVM.updateRightAnsers(0)
-    gameVM.updateRoundCount(0)
-    for (index in gameVM.enabledButtons.indices){
-        gameVM.enabledButtons[index] = true
-        gameVM.correctAnswers[index] = false
-    }
-    gameVM.updateTimePass(0)
-    gameVM.updateRandomQuestion(generateRandomQuestion(settingsVM))
-}

@@ -1,5 +1,6 @@
 package com.example.trivialapp.View.vertical
 
+import android.media.MediaPlayer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -32,42 +33,33 @@ import com.example.trivialapp.model.WindowInfo
 import com.example.trivialapp.model.restartRound
 
 @Composable
-fun VerticalGameScreen(navigationController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
+fun VerticalGameScreen(navigationController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo, audio: Array<MediaPlayer>) {
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
         val startGuide = createGuidelineFromStart(0.1f)
         val endGuide = createGuidelineFromEnd(0.1f)
-        val (diffText, round, imgQuestion, question, answer, nextQuestion, progres) = createRefs()
+        val (diffText, imgQuestion, question, answer, nextQuestion, progres) = createRefs()
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.secondary)
                 .constrainAs(diffText) {
                     top.linkTo(parent.top)
+                    //bottom.linkTo(round.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
         ) {
             TopBar(navigationController = navigationController, settingsVM = settingsVM, gameVM = gameVM)
         }
-        Text(
-            text = "Round ${gameVM.roundCount}/${settingsVM.rounds}",
-            fontSize = settingsVM.textSize.sp,
-            modifier = Modifier.constrainAs(round) {
-                top.linkTo(diffText.bottom)
-                bottom.linkTo(imgQuestion.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
-        )
         Image(
             painter = painterResource(id = gameVM.randomQuestion.img),
             contentDescription = "Image question",
             modifier = Modifier
                 .size(300.dp)
                 .constrainAs(imgQuestion) {
-                    top.linkTo(round.bottom)
+                    top.linkTo(diffText.bottom)
                     bottom.linkTo(question.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -90,7 +82,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround,
+            verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(answer) {
@@ -100,7 +92,7 @@ fun VerticalGameScreen(navigationController: NavHostController, settingsVM: Sett
                     end.linkTo(parent.end)
                 }
         ) {
-            AnswersButtons(settingsVM = settingsVM, gameVM = gameVM, windowInfo = windowInfo)
+            AnswersButtons(settingsVM = settingsVM, gameVM = gameVM, windowInfo = windowInfo, arrAudios = audio)
         }
         if (gameVM.stop) {
             Button(

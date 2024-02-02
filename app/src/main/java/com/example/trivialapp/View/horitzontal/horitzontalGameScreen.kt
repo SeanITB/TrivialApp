@@ -1,4 +1,5 @@
 package com.example.trivialapp.View.horitzontal
+import android.media.MediaPlayer
 import android.widget.Button
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,7 +40,7 @@ import com.example.trivialapp.model.restartRound
 import com.example.trivialapp.navigation.Routes
 
 @Composable
-fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo) {
+fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: SettingsViewModel, gameVM: GameViewModel, windowInfo: WindowInfo, arrAudio: Array<MediaPlayer>) {
     val materialColor = MaterialTheme.colorScheme
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
@@ -118,21 +119,8 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
                     end.linkTo(parent.end)
                 }
         ) {
-            AnswersButtons(settingsVM = settingsVM, gameVM = gameVM, windowInfo = windowInfo)
+            AnswersButtons(settingsVM = settingsVM, gameVM = gameVM, windowInfo = windowInfo, arrAudio)
         }
-        LinearProgressIndicator(
-            progress = gameVM.timePassed.toFloat() / settingsVM.time.toFloat(),
-            color = materialColor.secondary,
-            trackColor = materialColor.onSurface,
-            modifier = Modifier
-                .width(370.dp)
-                .constrainAs(progres) {
-                    top.linkTo(answer.bottom)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end, margin = 150.dp)
-                }
-        )
         if (gameVM.stop) {
             Button(
                 onClick = { restartRound(settingsVM = settingsVM, gameVM = gameVM) },
@@ -151,5 +139,18 @@ fun HoritzontalGameScreen(navigationController: NavHostController, settingsVM: S
                 Text(text = "Next question")
             }
         }
+        LinearProgressIndicator(
+            progress = gameVM.timePassed.toFloat() / settingsVM.time.toFloat(),
+            color = materialColor.secondary,
+            trackColor = materialColor.onSurface,
+            modifier = Modifier
+                .width(370.dp)
+                .constrainAs(progres) {
+                    top.linkTo(answer.bottom)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start, margin = 50.dp)
+                    end.linkTo(parent.end, margin = 150.dp)
+                }
+        )
     }
 }

@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -89,7 +90,7 @@ fun HoritzontalResultSreen(navController: NavHostController, settingsVM: Setting
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
                 modifier = Modifier.width(200.dp)
             ) {
-                Text(text = "Return to menu", fontSize = settingsVM.textSize.sp)
+                Text(text = "Return to menu", fontSize = settingsVM.textSize.sp, textAlign = TextAlign.Center)
             }
             Spacer(modifier = Modifier.height(10.dp))
             Button(
